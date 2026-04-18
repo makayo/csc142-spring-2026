@@ -1,0 +1,47 @@
+/* RecipeGallery.css */
+
+/* Page container */
+.gallery-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Section titles */
+.gallery-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Grid layout for cards */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* Individual recipe card */
+.recipe-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  background: #fafafa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.recipe-card:hover {
+  transform: scale(1.03);
+}
+
+/* Recipe image */
+.recipe-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Ingredients list */
+.recipe-card ul {
+  padding-left: 20px;
+}

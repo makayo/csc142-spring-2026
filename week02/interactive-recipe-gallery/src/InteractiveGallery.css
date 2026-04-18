@@ -1,0 +1,44 @@
+.interactive-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.dessert-img {
+  width: 350px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dessert-title {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.position {
+  margin-top: 5px;
+  color: #555;
+}
+
+.buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button {
+  padding: 8px 14px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #333;
+  color: white;
+}
+
+button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}

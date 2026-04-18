@@ -1,117 +1,77 @@
-// RecipeGallery.jsx
-import React from "react";
 import "./RecipeGallery.css";
 
 const recipes = [
   {
     id: 1,
-    title: "Spaghetti Carbonara",
-    ingredients: ["Pasta", "Eggs", "Cheese", "Bacon"],
+    title: "Spaghetti",
     image: "/gallery/id1_spaghetti.jpg",
+    ingredients: ["Pasta", "Tomato Sauce", "Garlic"],
   },
   {
     id: 2,
-    title: "Chicken Curry",
-    ingredients: ["Chicken", "Curry Paste", "Coconut Milk", "Onions"],
+    title: "Curry",
     image: "/gallery/id2_curry.jpg",
+    ingredients: ["Chicken", "Curry Paste", "Coconut Milk"],
   },
   {
     id: 3,
     title: "Avocado Toast",
-    ingredients: ["Bread", "Avocado", "Salt", "Pepper"],
     image: "/gallery/id3_avocado.jfif",
+    ingredients: ["Bread", "Avocado", "Salt"],
   },
-
   {
     id: 4,
-    title: "Chicken Adobo",
-    ingredients: [
-      "Chicken",
-      "Soy Sauce",
-      "Vinegar(White or Apple cider)",
-      "Garlic",
-      "Onions",
-      "Bay leaf(1)",
-      "Black Peppercorn",
-    ],
+    title: "Adobo",
     image: "/gallery/id4_adobo.jpg",
+    ingredients: ["Chicken", "Soy Sauce", "Vinegar"],
   },
-
   {
     id: 5,
     title: "Dinuguan",
-    ingredients: [
-      "Diced pork/intestine",
-      "water",
-      "Garlic",
-      "Salt",
-      "Pepper",
-      "Bird's eye chiles",
-      "Pig's blood",
-      "Filipino vinegar",
-    ],
-    image: "/gallery/id5__dinuguan.jpg",
+    image: "/gallery/id5_dinuguan.jpg",
+    ingredients: ["Pork", "Blood", "Garlic"],
   },
-
   {
     id: 6,
     title: "Kelaguen",
-    ingredients: [
-      "Grilled Chicken diced  or raw sliced beef(ceviche style) or diced par-boiled shrimp",
-      " fresh lemon juice",
-      "Grated fresh coconut",
-      "Guam local boonie peppers",
-      "Salt",
-      "Pepper",
-      "Green onions",
-    ],
     image: "/gallery/id6_kelaguen.webp",
+    ingredients: ["Chicken", "Lemon", "Coconut"],
   },
 ];
 
 export default function RecipeGallery() {
   return (
-    <div className="gallery-container">
-      {/* Main Recipe Gallery */}
-      <h1>Recipe Gallery</h1>
+    <div className="recipe-container">
+      <h2>Recipe Gallery</h2>
 
-      <div className="recipe-grid">
-        {recipes
-          .filter((recipe) => recipe.id <= 3)
-          .map((recipe) => (
-            <div className="recipe-card" key={recipe.id}>
-              <img src={recipe.image} alt={recipe.title} />
-              <h2>{recipe.title}</h2>
-
-              <h4>Ingredients:</h4>
-              <ul>
-                {recipe.ingredients.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <div className="grid">
+        {recipes.slice(0, 3).map((recipe) => (
+          <div key={recipe.id} className="card">
+            <img src={recipe.image} alt={recipe.title} />
+            <h3>{recipe.title}</h3>
+            <ul>
+              {recipe.ingredients.map((ing, i) => (
+                <li key={i}>{ing}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
-      {/* Island Style Food Section */}
-      <h1 style={{ marginTop: "40px" }}>Island Style Food</h1>
+      <h2>Island Style Food</h2>
 
-      <div className="recipe-grid">
-        {recipes
-          .filter((recipe) => recipe.id >= 4)
-          .map((recipe) => (
-            <div className="recipe-card" key={recipe.id}>
-              <img src={recipe.image} alt={recipe.title} />
-              <h2>{recipe.title}</h2>
-
-              <h4>Ingredients:</h4>
-              <ul>
-                {recipe.ingredients.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <div className="grid">
+        {recipes.slice(3).map((recipe) => (
+          <div key={recipe.id} className="card">
+            <img src={recipe.image} alt={recipe.title} />
+            <h3>{recipe.title}</h3>
+            <ul>
+              {recipe.ingredients.map((ing, i) => (
+                <li key={i}>{ing}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   );

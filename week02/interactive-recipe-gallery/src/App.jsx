@@ -1,11 +1,11 @@
 import RecipeGallery from "./RecipeGallery";
+import InteractiveGallery from "./InteractiveGallery";
 
-function App() {
+export default function App() {
   return (
     <div>
       <RecipeGallery />
+      <InteractiveGallery />
     </div>
   );
 }
-
-export default App;

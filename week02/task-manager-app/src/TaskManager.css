@@ -1,0 +1,147 @@
+.task-container {
+  width: 520px;
+  height: 650px;              /* 🔥 FIXED SIZE */
+  margin: 40px auto;
+  padding: 20px;
+  background: #1e1e2f;
+  color: white;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;          /* 🔥 prevents growth */
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* INPUT */
+.input-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+.button {
+  padding: 10px 14px;
+  border: none;
+  background: #4cafef;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* FILTERS */
+.filter-section {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.filter-section button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #444;
+  color: white;
+  transition: 0.2s;
+}
+
+.filter-section button:hover {
+  background: #666;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* TASK LIST (IMPORTANT FIX) */
+.task-list {
+  flex: 1;                  /* 🔥 takes remaining space */
+  overflow-y: auto;         /* 🔥 scroll instead of growing */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 5px;
+}
+
+/* TASK ITEM */
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #2a2a3d;
+  padding: 10px;
+  border-radius: 6px;
+
+  min-height: 60px;         /* 🔥 prevents collapse */
+}
+
+/* TITLE */
+.task-title {
+  flex: 1;              /* takes available space safely */
+  min-width: 0;         /* prevents flex overflow bug */
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.task-title.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* BUTTONS */
+.actions button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* EMPTY */
+.empty {
+  text-align: center;
+  opacity: 0.7;
+  margin-top: 20px;
+}
+
+/* PRIORITY COLORS */
+.high { border-left: 4px solid #ff4d4d; }
+.medium { border-left: 4px solid orange; }
+.low { border-left: 4px solid #4caf50; }
+
+/* META */
+.meta {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* ACTIVE FILTER */
+.active-filter {
+  background: #4cafef !important;
+  color: white;
+}

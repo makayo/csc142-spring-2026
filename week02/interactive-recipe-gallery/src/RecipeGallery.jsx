@@ -40,17 +40,24 @@ const recipes = [
 ];
 
 export default function RecipeGallery() {
+  const recipeGallery = recipes.filter((r) => r.id >= 1 && r.id <= 3);
+  const ethnicGallery = recipes.filter((r) => r.id >= 4 && r.id <= 6);
+
   return (
     <div className="recipe-container">
       <h2>Recipe Gallery</h2>
 
       <div className="recipe-grid">
-        {recipes.slice(0, 3).map((recipe) => (
+        {recipeGallery.map((recipe) => (
           <div key={recipe.id} className="card">
-            <img src={recipe.image} alt={recipe.title} />
+            <img
+              src={recipe.image || "/gallery/fallback.jpg"}
+              alt={recipe.title}
+              onError={(e) => (e.target.src = "/gallery/fallback.jpg")}
+            />
             <h3>{recipe.title}</h3>
             <ul>
-              {recipe.ingredients.map((ing, i) => (
+              {recipe.ingredients?.map((ing, i) => (
                 <li key={i}>{ing}</li>
               ))}
             </ul>
@@ -61,12 +68,16 @@ export default function RecipeGallery() {
       <h2>Ethnic Gallery</h2>
 
       <div className="recipe-grid">
-        {recipes.slice(3).map((recipe) => (
+        {ethnicGallery.map((recipe) => (
           <div key={recipe.id} className="card">
-            <img src={recipe.image} alt={recipe.title} />
+            <img
+              src={recipe.image || "/gallery/fallback.jpg"}
+              alt={recipe.title}
+              onError={(e) => (e.target.src = "/gallery/fallback.jpg")}
+            />
             <h3>{recipe.title}</h3>
             <ul>
-              {recipe.ingredients.map((ing, i) => (
+              {recipe.ingredients?.map((ing, i) => (
                 <li key={i}>{ing}</li>
               ))}
             </ul>

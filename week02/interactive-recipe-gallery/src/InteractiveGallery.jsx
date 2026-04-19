@@ -25,15 +25,11 @@ export default function InteractiveGallery() {
   const current = desserts[index];
 
   const goNext = () => {
-    if (index < desserts.length - 1) {
-      setIndex(index + 1);
-    }
+    setIndex((prev) => (prev === desserts.length - 1 ? 0 : prev + 1));
   };
 
   const goPrev = () => {
-    if (index > 0) {
-      setIndex(index - 1);
-    }
+    setIndex((prev) => (prev === 0 ? desserts.length - 1 : prev - 1));
   };
 
   return (
@@ -48,10 +44,10 @@ export default function InteractiveGallery() {
       </p>
 
       <div className="buttons">
-        <button onClick={goPrev} disabled={index === 0}>
+        <button className="btn" onClick={goPrev}>
           Previous
         </button>
-        <button onClick={goNext} disabled={index === desserts.length - 1}>
+        <button className="btn" onClick={goNext}>
           Next
         </button>
       </div>

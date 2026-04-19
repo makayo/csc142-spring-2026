@@ -44,7 +44,7 @@ export default function RecipeGallery() {
     <div className="recipe-container">
       <h2>Recipe Gallery</h2>
 
-      <div className="grid">
+      <div className="recipe-grid">
         {recipes.slice(0, 3).map((recipe) => (
           <div key={recipe.id} className="card">
             <img src={recipe.image} alt={recipe.title} />
@@ -58,9 +58,9 @@ export default function RecipeGallery() {
         ))}
       </div>
 
-      <h2>Island Style Food</h2>
+      <h2>Ethnic Gallery</h2>
 
-      <div className="grid">
+      <div className="recipe-grid">
         {recipes.slice(3).map((recipe) => (
           <div key={recipe.id} className="card">
             <img src={recipe.image} alt={recipe.title} />

@@ -5,7 +5,8 @@
 
 .dessert-img {
   width: 350px;
-  height: auto;
+  height: 250px; /* FIXED HEIGHT */
+  object-fit: cover; /* CROPS NICELY */
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -21,24 +22,36 @@
   color: #555;
 }
 
-.buttons {
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+button {
+  all: unset;
 }
 
-button {
+/* Enterprise button system */
+.btn {
+  display: inline-block;
   padding: 8px 14px;
   font-size: 1rem;
   border-radius: 6px;
-  border: none;
+  border: 1px solid #999;
   cursor: pointer;
-  background-color: #333;
-  color: white;
+  background-color: #ccc;   /* always light grey */
+  color: #000;              /* always visible */
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.2s ease;
 }
 
-button:disabled {
-  background-color: #aaa;
+.btn:hover {
+  background-color: #bbb;
+}
+
+.btn:active {
+  background-color: #aaa;   /* pressed state */
+}
+
+.btn:disabled {
+  background-color: #ddd;
+  color: #777;
   cursor: not-allowed;
 }
+

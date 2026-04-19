@@ -1,64 +1,26 @@
-# Recipe & Interactive Dessert Gallery
+# Recipe Gallery
 
-## Overview
+A simple React recipe gallery built with Vite. It displays recipes in a clean card‑based layout with images, titles, and ingredient lists. Recipes are grouped into two sections based on their IDs:
 
-This project includes two React gallery components built with Vite:
+- **Recipe Gallery** (IDs 1–3)  
+- **Island Style Food** (IDs 4–6)
 
-- A **Recipe Gallery** that displays multiple recipes using a card-based layout
-- An **Interactive Dessert Gallery** that displays one image at a time with navigation controls
-
-The Recipe Gallery shows:
-
-- Images
-- Titles
-- Ingredient lists
-
-The gallery is divided into two sections:
-
-- Recipe Gallery (Recipes 1–3)
-- Island Style Food (Recipes 4–6)
-
-The Interactive Dessert Gallery demonstrates:
-
-- Single-image display
-- Next/Previous navigation
-- Boundary checks to prevent invalid navigation
+The project demonstrates basic React component structure, array mapping, JSX rendering, and responsive layout using CSS Grid. Images are served from the `public/` folder.
 
 ---
 
-## Concepts Demonstrated
-
-### Recipe Gallery
-
-- React components
-- Array mapping with `.map()`
-- JSX rendering
-- Responsive CSS Grid layout
-- Static asset handling via `public/` folder
-
-### Interactive Dessert Gallery
-
-- React state management (`useState`)
-- Index-based navigation
-- Conditional rendering
-- Boundary protection logic
-- Dynamic UI updates based on state
-
----
-
-## Tech Stack
-
-- React
-- Vite
-- JavaScript (ES6+)
-- CSS Grid / Flexbox
+## Technologies Used
+- React  
+- Vite  
+- JavaScript (ES6+)  
+- CSS Grid / Flexbox  
+- Static assets via `public/`  
 
 ---
 
 ## Project Structure
-
 ```
-interactive-recipe-gallery/
+recipe-gallery/
 │
 ├── public/
 │   └── gallery/
@@ -67,20 +29,13 @@ interactive-recipe-gallery/
 │       ├── id3_avocado.jfif
 │       ├── id4_adobo.jpg
 │       ├── id5_dinuguan.jpg
-│       ├── id6_kelaguen.webp
-│       ├── cheesecake.webp
-│       ├── chocolate-lava-cake.png
-│       ├── tiramisu.jpg
-│       └── vanilla-ice-cream-delight-caramel-drizzle.jpg
+│       └── id6_kelaguen.webp
 │
 ├── src/
 │   ├── RecipeGallery.jsx
 │   ├── RecipeGallery.css
-│   ├── InteractiveGallery.jsx
-│   ├── InteractiveGallery.css
 │   ├── App.jsx
 │   ├── App.css
-│   ├── index.css
 │   └── main.jsx
 │
 └── README.md
@@ -90,19 +45,19 @@ interactive-recipe-gallery/
 
 ## Running the Project
 
-### Install Dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Start Development Server
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Open the browser at:
+Open the local URL shown in the terminal, typically:
 
 ```
 http://localhost:5173/
@@ -113,252 +68,92 @@ http://localhost:5173/
 ## Features
 
 ### Recipe Cards
-
-Each recipe card includes:
-
-- An image
+Each card displays:
+- An image (with fallback)
 - A title
-- A list of ingredients
-
----
+- An ingredient list
 
 ### Dynamic Rendering
-
 Recipes are rendered using:
 
 ```js
-recipes.map();
+recipes.map()
 ```
 
-Each card includes a unique key:
+Each card uses a unique key:
 
 ```jsx
 key={recipe.id}
 ```
 
----
-
 ### Responsive Layout
-
-- Built using CSS Grid
-- Automatically adjusts columns based on screen size
-- Cards stack vertically on smaller screens
-
----
+CSS Grid adjusts automatically based on screen size.
 
 ### Organized Sections
-
-- Recipe Gallery (IDs 1–3)
-- Island Style Food (IDs 4–6)
-
----
-
-## Interactive Dessert Gallery
-
-### Objective
-
-- Display images from a predefined list
-- Navigate using Next and Previous buttons
-- Prevent out-of-bounds navigation
-
----
-
-### Component Logic
-
-#### State Management
-
-```jsx
-const [index, setIndex] = useState(0);
-const current = images[index];
-```
-
----
-
-#### Navigation
-
-```jsx
-const goNext = () => {
-  if (index < images.length - 1) {
-    setIndex(index + 1);
-  }
-};
-
-const goPrev = () => {
-  if (index > 0) {
-    setIndex(index - 1);
-  }
-};
-```
-
----
-
-### Boundary Protection
-
-- Prevents going past last image
-- Prevents going before first image
-- Buttons disable automatically based on position
-
----
-
-### UI Behavior
-
-- Displays current image
-- Shows description
-- Shows position indicator (e.g., 2 / 5)
-- Updates dynamically on navigation
-
----
-
-## Styling
-
-All styling is handled in:
-
-```
-src/RecipeGallery.css
-src/InteractiveGallery.css
-src/App.css
-src/index.css
-```
-
-Includes:
-
-- Grid layouts
-- Card shadows and borders
-- Responsive behavior
-- Centered dessert gallery layout
+Recipes are grouped by ID:
+- **1–3:** Recipe Gallery  
+- **4–6:** Island Style Food  
 
 ---
 
 ## Image Handling
-
 Images are stored in:
 
 ```
 public/gallery/
 ```
 
-Referenced in JSX as:
+Referenced directly in JSX:
 
 ```jsx
-image: "/gallery/id1_spaghetti.jpg";
+image: "/gallery/id1_spaghetti.jpg"
 ```
 
-This keeps asset handling simple and avoids bundler issues.
+A fallback image is used if the file is missing.
 
 ---
 
-## Test Cases
+# Test Cases
 
-### Normal Test Cases — Recipe Gallery
+## Normal Test Cases
 
-#### Test Case 1 — Rendering All Recipes
+### 1. Rendering All Recipes
+**Expected:**  
+- All 6 recipes render  
+- IDs 1–3 appear in Recipe Gallery  
+- IDs 4–6 appear in Island Style Food  
 
-Input: Load RecipeGallery with 6 recipes
+### 2. Images Load Correctly
+**Expected:**  
+- All images load  
+- Fallback image appears if a file is missing  
 
-Expected:
-
-- All 6 recipes render
-- IDs 1–3 under Recipe Gallery
-- IDs 4–6 under Island Style Food
-
-Result: Passed
-
----
-
-#### Test Case 2 — Image Loading
-
-Expected:
-
-- All images load correctly
-- No broken links
-
-Result: Passed
+### 3. Responsive Layout
+**Expected:**  
+- Grid adjusts on smaller screens  
+- Cards stack vertically on mobile  
 
 ---
 
-#### Test Case 3 — Responsive Layout
+## Edge Case Test Cases
 
-Expected:
+### 1. Empty Recipe List
+**Expected:**  
+- No cards render  
+- No errors  
 
-- Grid adapts
-- Cards stack on small screens
+### 2. Missing Image Field
+**Expected:**  
+- Card still renders  
+- Fallback image displays  
+- No crash  
 
-Result: Passed
-
----
-
-### Normal Test Cases — Interactive Gallery
-
-#### Test Case 1 — Initial Render
-
-Expected:
-
-- First image displayed
-- Previous disabled
-- Next enabled
-
----
-
-#### Test Case 2 — Navigation
-
-Expected:
-
-- Index updates correctly
-- Buttons disable at boundaries
-
----
-
-#### Test Case 3 — Boundary Protection
-
-Expected:
-
-- No index overflow
-- No errors
-
----
-
-### Edge Case Test Cases — Recipe Gallery
-
-#### Empty Recipe List
-
-Expected: No crash, no rendering
-
----
-
-#### Missing Image Field
-
-Expected: Card still renders with broken image icon
-
----
-
-#### Missing Ingredients
-
-Expected: Card renders with missing data handled safely
-
----
-
-### Edge Case Test Cases — Interactive Gallery
-
-#### Empty Image List
-
-Expected:
-
-- Fallback message
-- No navigation buttons
-
----
-
-#### Missing Image Source
-
-Expected:
-
-- Broken image icon
-- App remains stable
+### 3. Missing Ingredients Array
+**Expected:**  
+- Card renders without ingredients  
+- No errors due to optional chaining  
 
 ---
 
 ## Summary
-
-- All normal test cases passed
-- All edge cases handled safely
-- Both galleries are stable, responsive, and production-ready
+The Recipe Gallery renders correctly, remains stable under missing or incomplete data, and adapts responsively across screen sizes. All normal and edge test cases pass successfully.

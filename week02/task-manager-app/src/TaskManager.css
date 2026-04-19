@@ -1,6 +1,6 @@
 .task-container {
   width: 520px;
-  height: 650px;              /* 🔥 FIXED SIZE */
+  height: 650px;
   margin: 40px auto;
   padding: 20px;
   background: #1e1e2f;
@@ -9,7 +9,7 @@
 
   display: flex;
   flex-direction: column;
-  overflow: hidden;          /* 🔥 prevents growth */
+  overflow: hidden;
 }
 
 /* TITLE */
@@ -64,42 +64,46 @@
   background: #666;
 }
 
-/* STATS */
-.stats {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 14px;
-  opacity: 0.85;
-}
-
-/* TASK LIST (IMPORTANT FIX) */
+/* TASK LIST */
 .task-list {
-  flex: 1;                  /* 🔥 takes remaining space */
-  overflow-y: auto;         /* 🔥 scroll instead of growing */
+  flex: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding-right: 5px;
 }
 
-/* TASK ITEM */
+/* 🔥 TASK ITEM (FIXED) */
 .task {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column; /* ✅ KEY FIX */
+  gap: 8px;
+
   background: #2a2a3d;
   padding: 10px;
   border-radius: 6px;
+}
 
-  min-height: 60px;         /* 🔥 prevents collapse */
+/* 🔥 NEW INNER ROW */
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* CONTENT */
+.task-content {
+  flex: 1;
+  min-width: 0;
 }
 
 /* TITLE */
 .task-title {
-  flex: 1;              /* takes available space safely */
-  min-width: 0;         /* prevents flex overflow bug */
+  display: block;
   word-break: break-word;
+  overflow-wrap: anywhere;
   line-height: 1.4;
 }
 
@@ -108,10 +112,18 @@
   opacity: 0.6;
 }
 
+/* META */
+.meta {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
 /* ACTIONS */
 .actions {
   display: flex;
   gap: 6px;
+  flex-shrink: 0;
 }
 
 /* BUTTONS */
@@ -133,12 +145,6 @@
 .high { border-left: 4px solid #ff4d4d; }
 .medium { border-left: 4px solid orange; }
 .low { border-left: 4px solid #4caf50; }
-
-/* META */
-.meta {
-  font-size: 12px;
-  opacity: 0.7;
-}
 
 /* ACTIVE FILTER */
 .active-filter {

@@ -32,7 +32,7 @@ export default function TaskManager() {
       id: Date.now(),
       title: taskInput,
       completed: false,
-      priority, // ✅ FIXED: priority is included
+      priority,
       dueDate: dueDate || null,
       createdAt: new Date().toISOString(),
     };
@@ -48,10 +48,8 @@ export default function TaskManager() {
   const toggleTask = (id) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === id
-          ? { ...task, completed: !task.completed }
-          : task
-      )
+        task.id === id ? { ...task, completed: !task.completed } : task,
+      ),
     );
   };
 
@@ -88,11 +86,7 @@ export default function TaskManager() {
           onChange={(e) => setDueDate(e.target.value)}
         />
 
-        {/* ✅ PRIORITY NOW WORKING */}
-        <select
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
-        >
+        <select value={priority} onChange={(e) => setPriority(e.target.value)}>
           <option value="low">Low Priority</option>
           <option value="medium">Medium Priority</option>
           <option value="high">High Priority</option>
@@ -123,24 +117,20 @@ export default function TaskManager() {
         ) : (
           filteredTasks.map((task) => (
             <div key={task.id} className={`task ${task.priority}`}>
-              <div>
+              {/* ✅ FIXED STRUCTURE */}
+              <div className="task-content">
                 <span
-                  className={`task-title ${
-                    task.completed ? "completed" : ""
-                  }`}
+                  className={`task-title ${task.completed ? "completed" : ""}`}
                 >
                   {task.title}
                 </span>
 
-                {/* ✅ PRIORITY DISPLAY FIXED */}
                 <div className="meta">
                   <span className={`priority-tag ${task.priority}`}>
                     {task.priority.toUpperCase()}
                   </span>
 
-                  {task.dueDate && (
-                    <small> • Due: {task.dueDate}</small>
-                  )}
+                  {task.dueDate && <small> • Due: {task.dueDate}</small>}
                 </div>
               </div>
 
@@ -149,9 +139,7 @@ export default function TaskManager() {
                   {task.completed ? "Undo" : "Done"}
                 </button>
 
-                <button onClick={() => deleteTask(task.id)}>
-                  Delete
-                </button>
+                <button onClick={() => deleteTask(task.id)}>Delete</button>
               </div>
             </div>
           ))

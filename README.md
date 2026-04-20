@@ -9,10 +9,12 @@ Each folder represents a weekly assignment or project, organized to keep work st
 ## 📁 Folder Structure
 
 - week01/
-  - counter/ → Week 1 project (React counter app)
+  - Project - (React counter app)
 
 - week02/
-  - (future project)
+  - Project - (Interactive Recipe Gallery)
+  - Project - (Task Manager App)
+  - Project - (User Profile)
 
 - week03/
   - (future project)

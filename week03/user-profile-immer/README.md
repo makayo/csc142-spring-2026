@@ -1,8 +1,21 @@
-````markdown id="r7v2qk"
-# 👤 User Profile Dashboard (React + Vite + Immer)
+# 👤 User Profile State Management Dashboard (React + Vite + Immer)
 
 A modern React application demonstrating advanced state management with Immer (`use-immer`).  
-This project showcases how to efficiently handle deeply nested state, UI mode control, and real-time state visualization in a clean, production-style interface.
+This project focuses on managing deeply nested state structures while maintaining clean, predictable, and scalable UI state logic.
+
+---
+
+## 🎯 Objective
+
+This project demonstrates how to manage **deeply nested object state in React using `useImmer`**, with an emphasis on simplifying complex updates in structured user data systems.
+
+It is designed to strengthen practical understanding of:
+
+- Managing deeply nested state objects in React applications
+- Simplifying immutable updates using Immer’s draft mutation model
+- Separating UI state (edit/view mode) from domain data
+- Designing scalable, form-like state architectures
+- Improving state observability through real-time inspection
 
 ---
 
@@ -12,20 +25,6 @@ This project showcases how to efficiently handle deeply nested state, UI mode co
 - Vite
 - Immer / use-immer
 - JavaScript (ES Modules)
-
----
-
-## 🎯 Project Overview
-
-This application simulates a user profile management dashboard where state is structured, interactive, and fully reactive.
-
-It focuses on:
-
-- Managing deeply nested state objects
-- Simplifying immutable updates using Immer
-- Separating UI state from domain data
-- Implementing edit vs view (lock) modes
-- Real-time state inspection for debugging transparency
 
 ---
 
@@ -40,6 +39,18 @@ It focuses on:
 
 ---
 
+## 🧩 State Architecture
+
+The application state is managed as a single Immer-driven object:
+
+- **UI state** → `viewMode`
+- **Form state** → `name`, `email`
+- **Nested data** → `contactDetails`, `preferences`
+
+This structure keeps all related data centralized while maintaining clear separation of concerns.
+
+---
+
 ## 🏗️ Project Structure
 
 ```text
@@ -47,13 +58,13 @@ src/
  ├── main.jsx
  ├── App.jsx
  └── UserProfileWithImmer.jsx
-````
+```
 
 ---
 
 ## ⚡ Core Concept: Why Immer?
 
-Managing nested state in React can become verbose and error-prone:
+Traditional React state updates require manual immutable copying:
 
 ```js
 setState({
@@ -65,7 +76,7 @@ setState({
 });
 ```
 
-With Immer, state updates become direct and readable:
+With Immer, updates become direct and readable:
 
 ```js
 draft.contactDetails.phone = "updated value";
@@ -73,10 +84,20 @@ draft.contactDetails.phone = "updated value";
 
 ### Benefits
 
-* Cleaner and more readable code
-* Reduced risk of mutation bugs
-* Easier management of nested structures
-* Scales well for complex state systems
+- Cleaner and more maintainable code
+- Eliminates deep spread operator chains
+- Reduces risk of accidental mutations
+- Scales effectively for complex state trees
+
+---
+
+## ⚡ Design Note
+
+This application intentionally uses a single centralized Immer state tree to avoid:
+
+- Prop drilling
+- Fragmented state logic
+- Duplicate or inconsistent state sources
 
 ---
 
@@ -84,92 +105,55 @@ draft.contactDetails.phone = "updated value";
 
 The application includes a real-time JSON viewer that:
 
-* Displays the entire application state
-* Updates instantly on every user interaction
-* Helps visualize nested state changes
-* Supports debugging and state transparency
+- Displays the complete application state
+- Updates instantly on every user interaction
+- Helps visualize nested state changes
+- Supports debugging and state transparency
 
 ---
 
-## 🧪 Behavior Overview
+## 🧪 Testing
 
-### Edit Mode
-
-* All inputs are enabled
-* User can modify profile data
-* State updates are reflected instantly in JSON view
-
-### View Mode (Locked)
-
-* Inputs are disabled
-* Data becomes read-only
-* Prevents accidental modifications
+This section validates correct behavior of state updates, Immer integration, and UI interaction logic.
 
 ---
-
-## 🧩 State Design
-
-```json
-{
-  "viewMode": "edit",
-  "name": "",
-  "email": "",
-  "contactDetails": {
-    "phone": "",
-    "address": ""
-  },
-  "preferences": {
-    "newsletter": false,
-    "notifications": false
-  }
-}
-```
-
----
-
-## 🧪 Test Cases
 
 ## ✅ Normal Test Cases
 
 ### 1. Update Basic Information
 
 **Steps:**
-
-* Enter name: `Jo`
-* Enter email: `jo@email.com`
+- Enter a name (e.g., `Alex`)
+- Enter an email (e.g., `alex@email.com`)
 
 **Expected Result:**
-
-* Name and email update instantly
-* JSON viewer reflects changes in real time
+- State updates immediately
+- JSON viewer reflects changes in real time
 
 ---
 
-### 2. Update Contact Details
+### 2. Update Nested Contact Details
 
 **Steps:**
-
-* Enter phone number
-* Enter address
+- Enter phone number
+- Enter address
 
 **Expected Result:**
-
-* Nested `contactDetails` updates correctly
-* JSON viewer reflects updated structure
+- `contactDetails.phone` updates correctly
+- `contactDetails.address` updates correctly
+- Nested structure remains intact
 
 ---
 
 ### 3. Toggle Preferences
 
 **Steps:**
-
-* Toggle newsletter checkbox
-* Toggle notifications checkbox
+- Toggle newsletter checkbox
+- Toggle notifications checkbox
 
 **Expected Result:**
-
-* Boolean values update correctly
-* Changes appear instantly in JSON viewer
+- Boolean values flip correctly
+- Changes are reflected instantly in state viewer
 
 ---
 
@@ -178,57 +162,39 @@ The application includes a real-time JSON viewer that:
 ### 1. Empty Input Handling
 
 **Steps:**
-
-* Clear name and email fields
+- Clear name and email fields
 
 **Expected Result:**
-
-* Fields become empty strings
-* App remains stable with no rendering issues
+- Fields become empty strings
+- App does not crash or break rendering
 
 ---
 
-### 2. Rapid Toggle Interaction
+### 2. Rapid State Updates
 
 **Steps:**
-
-* Rapidly toggle checkboxes multiple times
+- Rapidly type in inputs or toggle checkboxes
 
 **Expected Result:**
-
-* State remains consistent
-* Final value matches last interaction
+- State remains consistent
+- No race conditions or UI desync
 
 ---
 
-### 3. Lock / Unlock Mode Switching
+### 3. View Mode Lock Behavior
 
 **Steps:**
-
-* Switch to view mode (locked)
-* Attempt edits
-* Switch back to edit mode
+- Switch to view mode (locked)
+- Attempt to modify fields
+- Switch back to edit mode
 
 **Expected Result:**
-
-* Inputs disable in view mode
-* No updates allowed while locked
-* Editing resumes after unlocking
-
----
-
-## 🚀 Highlights
-
-* Clean separation of UI and data state
-* Scalable architecture for complex forms
-* Real-time state visualization
-* Production-style interaction patterns
-* Efficient immutable state handling
+- Inputs are disabled in view mode
+- No state changes occur while locked
+- Editing resumes after unlocking
 
 ---
 
-## 📌 Summary
+## 🚀 Summary
 
 This project demonstrates practical React state architecture using Immer, focusing on clarity, scalability, and real-time observability of nested application state.
-
-```

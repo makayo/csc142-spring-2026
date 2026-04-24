@@ -1,206 +1,226 @@
 import { useImmer } from "use-immer";
 import { useState } from "react";
+import "./style.css";
 
 export default function ShoppingListWithImmer() {
-  const [shoppingList, updateShoppingList] = useImmer([]);
-
-  const [form, setForm] = useState({
-    name: "",
-    quantity: 1,
-    category: "",
-    notes: "",
+  const [state, updateState] = useImmer({
+    viewMode: "edit",
+    form: {
+      name: "",
+      quantity: 1,
+      category: "",
+      notes: "",
+    },
+    items: [],
   });
 
-  const addItem = () => {
-    if (!form.name.trim()) return;
+  const [editingNoteId, setEditingNoteId] = useState(null);
+  const [tempNote, setTempNote] = useState("");
 
-    updateShoppingList((draft) => {
-      draft.push({
+  const isLocked = state.viewMode === "view";
+
+  /* =========================
+     TOGGLE VIEW MODE
+  ========================= */
+  const toggleViewMode = () => {
+    updateState((draft) => {
+      draft.viewMode = draft.viewMode === "edit" ? "view" : "edit";
+    });
+  };
+
+  /* =========================
+     FORM UPDATE
+  ========================= */
+  const updateForm = (field, value) => {
+    updateState((draft) => {
+      draft.form[field] = value;
+    });
+  };
+
+  /* =========================
+     ADD ITEM
+  ========================= */
+  const addItem = () => {
+    if (!state.form.name.trim()) return;
+
+    updateState((draft) => {
+      draft.items.push({
         id: Date.now(),
-        name: form.name,
-        quantity: Number(form.quantity),
+        name: draft.form.name,
+        quantity: Number(draft.form.quantity),
         details: {
-          category: form.category,
-          notes: form.notes,
+          category: draft.form.category,
+          notes: draft.form.notes,
         },
       });
-    });
 
-    setForm({ name: "", quantity: 1, category: "", notes: "" });
+      draft.form.name = "";
+      draft.form.quantity = 1;
+      draft.form.category = "";
+      draft.form.notes = "";
+    });
   };
 
+  /* =========================
+     REMOVE ITEM
+  ========================= */
   const removeItem = (id) => {
-    updateShoppingList((draft) => {
-      const index = draft.findIndex((i) => i.id === id);
-      if (index !== -1) draft.splice(index, 1);
+    updateState((draft) => {
+      const index = draft.items.findIndex((i) => i.id === id);
+      if (index !== -1) draft.items.splice(index, 1);
     });
   };
 
-  const updateNotes = (id, notes) => {
-    updateShoppingList((draft) => {
-      const item = draft.find((i) => i.id === id);
-      if (item) item.details.notes = notes;
+  /* =========================
+     NOTES EDIT FLOW
+  ========================= */
+  const startEditNote = (item) => {
+    setEditingNoteId(item.id);
+    setTempNote(item.details.notes);
+  };
+
+  const saveNote = (id) => {
+    updateState((draft) => {
+      const item = draft.items.find((i) => i.id === id);
+      if (item) item.details.notes = tempNote;
     });
+
+    setEditingNoteId(null);
+    setTempNote("");
   };
 
   return (
-    <div style={styles.page}>
-      <h1 style={styles.title}>🛒 Shopping List</h1>
+    <div className="page">
+      {/* ================= LEFT PANEL ================= */}
+      <div className="panel">
+        <div className="header">
+          <h2>🛒 Shopping List</h2>
 
-      {/* FORM */}
-      <div style={styles.card}>
-        <input
-          style={styles.input}
-          placeholder="Item name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
+          <button className="button" onClick={toggleViewMode}>
+            {state.viewMode === "edit" ? "🔒 Lock" : "🔓 Unlock"}
+          </button>
+        </div>
 
-        <input
-          style={styles.input}
-          type="number"
-          placeholder="Qty"
-          value={form.quantity}
-          onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-        />
+        <p className="modeText">
+          Mode: <b>{state.viewMode.toUpperCase()}</b>
+        </p>
 
-        <input
-          style={styles.input}
-          placeholder="Category"
-          value={form.category}
-          onChange={(e) => setForm({ ...form, category: e.target.value })}
-        />
+        {/* ================= FORM ================= */}
+        <div className="card">
+          <h3>Add Item</h3>
 
-        <input
-          style={styles.input}
-          placeholder="Notes"
-          value={form.notes}
-          onChange={(e) => setForm({ ...form, notes: e.target.value })}
-        />
+          <input
+            className="input"
+            placeholder="Item name"
+            value={state.form.name}
+            disabled={isLocked}
+            onChange={(e) => updateForm("name", e.target.value)}
+          />
 
-        <button style={styles.addBtn} onClick={addItem}>
-          ➕ Add Item
-        </button>
-      </div>
+          <input
+            className="input"
+            type="number"
+            placeholder="Quantity"
+            value={state.form.quantity}
+            disabled={isLocked}
+            onChange={(e) => updateForm("quantity", e.target.value)}
+          />
 
-      {/* LIST */}
-      <div style={styles.list}>
-        {shoppingList.length === 0 && (
-          <p style={styles.empty}>No items yet. Add something 👆</p>
-        )}
+          <input
+            className="input"
+            placeholder="Category"
+            value={state.form.category}
+            disabled={isLocked}
+            onChange={(e) => updateForm("category", e.target.value)}
+          />
 
-        {shoppingList.map((item) => (
-          <div key={item.id} style={styles.item}>
-            <div>
-              <h3 style={styles.itemTitle}>
-                {item.name} <span>({item.quantity})</span>
-              </h3>
+          <input
+            className="input"
+            placeholder="Notes"
+            value={state.form.notes}
+            disabled={isLocked}
+            onChange={(e) => updateForm("notes", e.target.value)}
+          />
 
-              <p style={styles.meta}>
-                📦 {item.details.category || "No category"}
-              </p>
+          <button className="addBtn" onClick={addItem} disabled={isLocked}>
+            ➕ Add Item
+          </button>
+        </div>
 
-              <p style={styles.meta}>📝 {item.details.notes || "No notes"}</p>
-            </div>
+        {/* ================= LIST ================= */}
+        <div className="list">
+          {state.items.length === 0 && (
+            <p className="empty">No items yet. Add something 👆</p>
+          )}
 
-            <div style={styles.actions}>
+          {state.items.map((item) => (
+            <div key={item.id} className="item">
+              <div>
+                <h3>
+                  {item.name} ({item.quantity})
+                </h3>
+
+                <p>📦 {item.details.category || "No category"}</p>
+
+                {/* READ ONLY DISPLAY */}
+                <p>📝 {item.details.notes || "No notes"}</p>
+
+                {/* EDIT NOTES */}
+                {editingNoteId === item.id ? (
+                  <div>
+                    <input
+                      className="input"
+                      value={tempNote}
+                      onChange={(e) => setTempNote(e.target.value)}
+                    />
+
+                    <button
+                      className="smallBtn"
+                      onClick={() => saveNote(item.id)}
+                    >
+                      Save
+                    </button>
+
+                    <button
+                      className="smallBtn"
+                      onClick={() => setEditingNoteId(null)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    className="smallBtn"
+                    onClick={() => startEditNote(item)}
+                    disabled={isLocked}
+                  >
+                    ✏️ Edit Notes
+                  </button>
+                )}
+              </div>
+
               <button
-                style={styles.smallBtn}
-                onClick={() =>
-                  updateNotes(
-                    item.id,
-                    prompt("Update notes:", item.details.notes),
-                  )
-                }
-              >
-                Edit
-              </button>
-
-              <button
-                style={styles.deleteBtn}
+                className="deleteBtn"
                 onClick={() => removeItem(item.id)}
+                disabled={isLocked}
               >
                 Delete
               </button>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+
+      {/* ================= RIGHT PANEL ================= */}
+      <div className="jsonPanel">
+        <h2>📊 Live State Viewer</h2>
+
+        <p className="subtitle">
+          Real-time Immer state (form + items + UI mode)
+        </p>
+
+        <pre className="json">{JSON.stringify(state, null, 2)}</pre>
       </div>
     </div>
   );
 }
-
-/* 🎨 Simple clean styling */
-const styles = {
-  page: {
-    fontFamily: "Arial",
-    maxWidth: "600px",
-    margin: "40px auto",
-    padding: "20px",
-  },
-  title: {
-    textAlign: "center",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    padding: "15px",
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    marginBottom: "20px",
-  },
-  input: {
-    padding: "8px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-  },
-  addBtn: {
-    padding: "10px",
-    background: "#2ecc71",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-  },
-  list: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  item: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "12px",
-    border: "1px solid #eee",
-    borderRadius: "8px",
-  },
-  itemTitle: {
-    margin: 0,
-  },
-  meta: {
-    margin: "4px 0",
-    color: "#555",
-    fontSize: "14px",
-  },
-  actions: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "5px",
-  },
-  smallBtn: {
-    padding: "5px 8px",
-    cursor: "pointer",
-  },
-  deleteBtn: {
-    padding: "5px 8px",
-    background: "#e74c3c",
-    color: "white",
-    border: "none",
-    cursor: "pointer",
-  },
-  empty: {
-    textAlign: "center",
-    color: "#888",
-  },
-};

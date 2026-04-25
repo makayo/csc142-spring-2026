@@ -1,126 +1,194 @@
 import { useImmer } from "use-immer";
+import "./UserProfileWithImmer.css";
+
+const EMPTY_PROFILE = {
+  name: "",
+  email: "",
+  contactDetails: {
+    phone: "",
+    address: "",
+  },
+  preferences: {
+    newsletter: false,
+    notifications: false,
+  },
+};
 
 export default function UserProfileWithImmer() {
-  const [userProfile, updateUserProfile] = useImmer({
-    viewMode: "edit", // 👈 NOW PART OF STATE (shows in JSON)
-    name: "",
-    email: "",
-    contactDetails: {
-      phone: "",
-      address: "",
-    },
-    preferences: {
-      newsletter: false,
-      notifications: false,
-    },
+  const [state, updateState] = useImmer({
+    viewMode: "view", // "view" | "edit"
+    draft: EMPTY_PROFILE,
+    saved: EMPTY_PROFILE,
   });
 
-  const isLocked = userProfile.viewMode === "view";
+  const isLocked = state.viewMode === "view";
 
-  const toggleViewMode = () => {
-    updateUserProfile((draft) => {
-      draft.viewMode = draft.viewMode === "edit" ? "view" : "edit";
+  // 🔓 Enter edit mode (copy saved → draft safely)
+  const enableEdit = () => {
+    updateState((draft) => {
+      draft.viewMode = "edit";
+
+      draft.draft.name = draft.saved.name;
+      draft.draft.email = draft.saved.email;
+      draft.draft.contactDetails.phone = draft.saved.contactDetails.phone;
+      draft.draft.contactDetails.address = draft.saved.contactDetails.address;
+      draft.draft.preferences.newsletter = draft.saved.preferences.newsletter;
+      draft.draft.preferences.notifications =
+        draft.saved.preferences.notifications;
     });
   };
 
+  // ❌ Cancel edits (restore saved → draft)
+  const cancelEdit = () => {
+    updateState((draft) => {
+      draft.viewMode = "view";
+
+      draft.draft.name = draft.saved.name;
+      draft.draft.email = draft.saved.email;
+      draft.draft.contactDetails.phone = draft.saved.contactDetails.phone;
+      draft.draft.contactDetails.address = draft.saved.contactDetails.address;
+      draft.draft.preferences.newsletter = draft.saved.preferences.newsletter;
+      draft.draft.preferences.notifications =
+        draft.saved.preferences.notifications;
+    });
+  };
+
+  // 💾 Save changes (draft → saved + reset draft)
+  const submitChanges = () => {
+    updateState((draft) => {
+      draft.saved.name = draft.draft.name;
+      draft.saved.email = draft.draft.email;
+      draft.saved.contactDetails.phone = draft.draft.contactDetails.phone;
+      draft.saved.contactDetails.address = draft.draft.contactDetails.address;
+      draft.saved.preferences.newsletter = draft.draft.preferences.newsletter;
+      draft.saved.preferences.notifications =
+        draft.draft.preferences.notifications;
+
+      // reset draft cleanly (NO CLONE)
+      draft.draft.name = "";
+      draft.draft.email = "";
+      draft.draft.contactDetails.phone = "";
+      draft.draft.contactDetails.address = "";
+      draft.draft.preferences.newsletter = false;
+      draft.draft.preferences.notifications = false;
+
+      draft.viewMode = "view";
+    });
+  };
+
+  // ✏️ simple field updates
+  const updateField = (field, value) => {
+    updateState((draft) => {
+      draft.draft[field] = value;
+    });
+  };
+
+  // 📞 nested updates
   const updateContact = (field, value) => {
-    updateUserProfile((draft) => {
-      draft.contactDetails[field] = value;
+    updateState((draft) => {
+      draft.draft.contactDetails[field] = value;
     });
   };
 
+  // ⚙️ toggle preferences
   const togglePref = (key) => {
-    updateUserProfile((draft) => {
-      draft.preferences[key] = !draft.preferences[key];
+    updateState((draft) => {
+      draft.draft.preferences[key] = !draft.draft.preferences[key];
     });
   };
+
+  const d = state.draft;
 
   return (
-    <div style={styles.page}>
-      {/* LEFT: EDITOR */}
-      <div style={styles.panel}>
-        <div style={styles.header}>
+    <div className="page">
+      {/* LEFT PANEL */}
+      <div className="panel">
+        <div className="header">
           <h2>👤 User Profile</h2>
 
-          <button style={styles.button} onClick={toggleViewMode}>
-            {userProfile.viewMode === "edit"
-              ? "🔒 Lock Editing"
-              : "🔓 Unlock Editing"}
-          </button>
+          <div style={{ display: "flex", gap: 8 }}>
+            {state.viewMode === "view" ? (
+              <button className="button" onClick={enableEdit}>
+                ✏️ Edit
+              </button>
+            ) : (
+              <>
+                <button className="saveButton" onClick={submitChanges}>
+                  💾 Save
+                </button>
+
+                <button className="cancelButton" onClick={cancelEdit}>
+                  ✖ Cancel
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
-        <p style={styles.modeText}>
-          Mode: <b>{userProfile.viewMode.toUpperCase()}</b>
+        <p className="modeText">
+          Mode: <b>{state.viewMode.toUpperCase()}</b>
         </p>
 
         {/* BASIC INFO */}
-        <div style={styles.card}>
+        <div className="card">
           <h3>Basic Info</h3>
 
           <input
-            style={styles.input}
+            className="input"
             placeholder="Name"
-            value={userProfile.name}
+            value={d.name}
             disabled={isLocked}
-            onChange={(e) =>
-              updateUserProfile((draft) => {
-                draft.name = e.target.value;
-              })
-            }
+            onChange={(e) => updateField("name", e.target.value)}
           />
 
           <input
-            style={styles.input}
+            className="input"
             placeholder="Email"
-            value={userProfile.email}
+            value={d.email}
             disabled={isLocked}
-            onChange={(e) =>
-              updateUserProfile((draft) => {
-                draft.email = e.target.value;
-              })
-            }
+            onChange={(e) => updateField("email", e.target.value)}
           />
         </div>
 
         {/* CONTACT */}
-        <div style={styles.card}>
+        <div className="card">
           <h3>Contact Details</h3>
 
           <input
-            style={styles.input}
+            className="input"
             placeholder="Phone"
-            value={userProfile.contactDetails.phone}
+            value={d.contactDetails.phone}
             disabled={isLocked}
             onChange={(e) => updateContact("phone", e.target.value)}
           />
 
           <input
-            style={styles.input}
+            className="input"
             placeholder="Address"
-            value={userProfile.contactDetails.address}
+            value={d.contactDetails.address}
             disabled={isLocked}
             onChange={(e) => updateContact("address", e.target.value)}
           />
         </div>
 
         {/* PREFERENCES */}
-        <div style={styles.card}>
+        <div className="card">
           <h3>Preferences</h3>
 
-          <label style={styles.checkbox}>
+          <label className="checkbox">
             <input
               type="checkbox"
-              checked={userProfile.preferences.newsletter}
+              checked={d.preferences.newsletter}
               disabled={isLocked}
               onChange={() => togglePref("newsletter")}
             />
             Email Updates
           </label>
 
-          <label style={styles.checkbox}>
+          <label className="checkbox">
             <input
               type="checkbox"
-              checked={userProfile.preferences.notifications}
+              checked={d.preferences.notifications}
               disabled={isLocked}
               onChange={() => togglePref("notifications")}
             />
@@ -129,100 +197,13 @@ export default function UserProfileWithImmer() {
         </div>
       </div>
 
-      {/* RIGHT: LIVE JSON */}
-      <div style={styles.jsonPanel}>
+      {/* RIGHT PANEL */}
+      <div className="jsonPanel">
         <h2>📊 Live State Inspector</h2>
+        <p className="subtitle">Immer Nested State</p>
 
-        <p style={styles.subtitle}>
-          Includes UI state + user data (Immer store)
-        </p>
-
-        <pre style={styles.json}>{JSON.stringify(userProfile, null, 2)}</pre>
+        <pre className="json">{JSON.stringify(state, null, 2)}</pre>
       </div>
     </div>
   );
 }
-
-/* 🎨 STYLES */
-const styles = {
-  page: {
-    display: "flex",
-    gap: "20px",
-    padding: "30px",
-    fontFamily: "Arial",
-    background: "#0b1220",
-    minHeight: "100vh",
-  },
-
-  panel: {
-    flex: 1,
-    background: "white",
-    borderRadius: "12px",
-    padding: "20px",
-  },
-
-  jsonPanel: {
-    flex: 1,
-    background: "#0f172a",
-    color: "#00ff99",
-    borderRadius: "12px",
-    padding: "20px",
-    fontSize: "13px",
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  modeText: {
-    fontSize: "12px",
-    color: "#555",
-    marginBottom: "10px",
-  },
-
-  card: {
-    marginTop: "15px",
-    padding: "15px",
-    border: "1px solid #eee",
-    borderRadius: "10px",
-  },
-
-  input: {
-    width: "100%",
-    padding: "10px",
-    marginTop: "8px",
-    marginBottom: "10px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-  },
-
-  checkbox: {
-    display: "flex",
-    gap: "8px",
-    marginTop: "10px",
-    alignItems: "center",
-  },
-
-  button: {
-    padding: "8px 12px",
-    background: "#2563eb",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-  },
-
-  json: {
-    background: "#020617",
-    padding: "15px",
-    borderRadius: "10px",
-    overflow: "auto",
-  },
-
-  subtitle: {
-    fontSize: "12px",
-    opacity: 0.7,
-  },
-};

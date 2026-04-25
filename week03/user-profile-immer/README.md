@@ -1,13 +1,13 @@
 # 👤 User Profile State Management Dashboard (React + Vite + Immer)
 
-A modern React application demonstrating advanced state management with Immer (`use-immer`).  
+A modern React application demonstrating advanced state management with Immer (`use-immer`).
 This project focuses on managing deeply nested state structures while maintaining clean, predictable, and scalable UI state logic.
 
 ---
 
 ## 🎯 Objective
 
-This project demonstrates how to manage **deeply nested object state in React using `useImmer`**, with an emphasis on simplifying complex updates in structured user data systems.
+This project demonstrates how to manage deeply nested object state in React using useImmer, with an emphasis on simplifying complex updates in structured user data systems.
 
 It is designed to strengthen practical understanding of:
 
@@ -28,173 +28,144 @@ It is designed to strengthen practical understanding of:
 
 ---
 
+## 🚀 How to Setup & Run
+
+1. Create project:
+   npm create vite@latest user-profile-immer -- --template react
+
+2. Go into folder:
+   cd user-profile-immer
+
+3. Install dependencies:
+   npm install
+   npm install use-immer immer
+
+4. Add your component:
+   Place UserProfileWithImmer.jsx inside src/
+
+5. Ensure main entry:
+   main.jsx should render <UserProfileWithImmer />
+
+6. Run project:
+   npm run dev
+
+7. Open in browser:
+   http://localhost:5173
+
+---
+
 ## 🧠 Key Features
 
-- 👤 Editable user profile (name, email)
-- 📞 Nested contact information (phone, address)
-- ⚙️ User preferences (newsletter, notifications)
-- 🔒 Toggleable edit / view mode (lock system)
-- 📊 Live JSON state inspector (real-time updates)
-- 🧩 Immutable state handling with `useImmer`
+- Editable user profile (name, email)
+- Nested contact details (phone, address)
+- User preferences (newsletter, notifications)
+- Edit / View mode toggle
+- Save / Cancel workflow
+- Live JSON state inspector
+- Immer-based nested state updates
 
 ---
 
 ## 🧩 State Architecture
 
-The application state is managed as a single Immer-driven object:
+Single centralized state object:
 
-- **UI state** → `viewMode`
-- **Form state** → `name`, `email`
-- **Nested data** → `contactDetails`, `preferences`
-
-This structure keeps all related data centralized while maintaining clear separation of concerns.
-
----
-
-## 🏗️ Project Structure
-
-```text
-src/
- ├── main.jsx
- ├── App.jsx
- └── UserProfileWithImmer.jsx
-```
+- viewMode → controls UI mode
+- saved → committed data
+- draft → editable working copy
+- contactDetails → nested object
+- preferences → nested object
 
 ---
 
-## ⚡ Core Concept: Why Immer?
+## ⚡ Why Immer
 
-Traditional React state updates require manual immutable copying:
+Without Immer:
+Manual deep copying is required for nested updates.
 
-```js
-setState({
-  ...state,
-  contactDetails: {
-    ...state.contactDetails,
-    phone: "updated value",
-  },
-});
-```
+With Immer:
+You directly mutate draft state safely.
 
-With Immer, updates become direct and readable:
+Benefits:
 
-```js
-draft.contactDetails.phone = "updated value";
-```
-
-### Benefits
-
-- Cleaner and more maintainable code
-- Eliminates deep spread operator chains
-- Reduces risk of accidental mutations
-- Scales effectively for complex state trees
+- less boilerplate
+- easier nested updates
+- safer immutable logic
+- scalable state design
 
 ---
 
-## ⚡ Design Note
+## ⚡ App Flow
 
-This application intentionally uses a single centralized Immer state tree to avoid:
-
-- Prop drilling
-- Fragmented state logic
-- Duplicate or inconsistent state sources
+1. View mode (read-only saved data)
+2. Click Edit → loads saved into draft
+3. Modify draft fields
+4. Save → draft becomes saved
+5. Cancel → discard draft changes
 
 ---
 
 ## 🔍 Live State Inspector
 
-The application includes a real-time JSON viewer that:
+Displays:
 
-- Displays the complete application state
-- Updates instantly on every user interaction
-- Helps visualize nested state changes
-- Supports debugging and state transparency
+- saved data
+- draft data
+- viewMode
+
+Updates in real time for debugging.
 
 ---
 
 ## 🧪 Testing
 
-This section validates correct behavior of state updates, Immer integration, and UI interaction logic.
+## Normal Cases
+
+1. Create user
+
+- enter all fields
+- click save
+- verify saved state updates
+
+2. Edit user
+
+- click edit
+- modify fields
+- save changes
+
+3. Cancel edit
+
+- modify fields
+- cancel
+- verify no changes saved
 
 ---
 
-## ✅ Normal Test Cases
+## Edge Cases
 
-### 1. Update Basic Information
+1. Empty inputs
 
-**Steps:**
-- Enter a name (e.g., `Alex`)
-- Enter an email (e.g., `alex@email.com`)
+- clear all fields
+- save
+- app should not crash
 
-**Expected Result:**
-- State updates immediately
-- JSON viewer reflects changes in real time
+2. Rapid typing
 
----
+- fast input changes
+- state remains stable
 
-### 2. Update Nested Contact Details
+3. Partial update
 
-**Steps:**
-- Enter phone number
-- Enter address
-
-**Expected Result:**
-- `contactDetails.phone` updates correctly
-- `contactDetails.address` updates correctly
-- Nested structure remains intact
-
----
-
-### 3. Toggle Preferences
-
-**Steps:**
-- Toggle newsletter checkbox
-- Toggle notifications checkbox
-
-**Expected Result:**
-- Boolean values flip correctly
-- Changes are reflected instantly in state viewer
-
----
-
-## ⚠️ Edge Case Tests
-
-### 1. Empty Input Handling
-
-**Steps:**
-- Clear name and email fields
-
-**Expected Result:**
-- Fields become empty strings
-- App does not crash or break rendering
-
----
-
-### 2. Rapid State Updates
-
-**Steps:**
-- Rapidly type in inputs or toggle checkboxes
-
-**Expected Result:**
-- State remains consistent
-- No race conditions or UI desync
-
----
-
-### 3. View Mode Lock Behavior
-
-**Steps:**
-- Switch to view mode (locked)
-- Attempt to modify fields
-- Switch back to edit mode
-
-**Expected Result:**
-- Inputs are disabled in view mode
-- No state changes occur while locked
-- Editing resumes after unlocking
+- update only one field
+- other fields remain unchanged
 
 ---
 
 ## 🚀 Summary
 
-This project demonstrates practical React state architecture using Immer, focusing on clarity, scalability, and real-time observability of nested application state.
+This project demonstrates a production-style React form system using Immer with:
+
+- draft vs saved separation
+- real-world edit/save/cancel workflow
+- nested state handling
+- clean scalable architecture

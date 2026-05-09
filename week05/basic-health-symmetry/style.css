@@ -1,0 +1,166 @@
+/* =========================
+   BASE LAYOUT
+========================= */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0f14;
+  color: #e6f1ff;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.app {
+  width: 700px;
+  background: #121a24;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 255, 200, 0.08);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header h1 {
+  margin: 0;
+  font-size: 22px;
+  color: #00ffd0;
+}
+
+.header p {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* =========================
+   INPUT CONTROLS
+========================= */
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #2a3b4f;
+  background: #0e141c;
+  color: white;
+}
+
+button {
+  padding: 10px 14px;
+  background: #00ffd0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #00c9a7;
+}
+
+/* =========================
+   LEGEND
+========================= */
+
+.legend {
+  margin-top: 15px;
+  font-size: 12px;
+  display: flex;
+  gap: 15px;
+}
+
+.legend span {
+  opacity: 0.8;
+}
+
+.legend .slow {
+  color: #00ffd0;
+}
+
+.legend .fast {
+  color: #ff4d6d;
+}
+
+.legend .mid {
+  color: #ffd000;
+}
+
+/* =========================
+   LIST VISUALIZATION
+========================= */
+
+.list-view {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* NODE BASE STYLE */
+.node {
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #1b2633;
+  border: 1px solid #2f3e50;
+  transition: all 0.3s ease;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* =========================
+   POINTER STATES
+========================= */
+
+/* slow pointer */
+.node.slow {
+  background: rgba(0, 255, 208, 0.15);
+  border-color: #00ffd0;
+  box-shadow: 0 0 12px #00ffd0;
+  transform: scale(1.1);
+}
+
+/* fast pointer */
+.node.fast {
+  background: rgba(255, 77, 109, 0.15);
+  border-color: #ff4d6d;
+  box-shadow: 0 0 12px #ff4d6d;
+  transform: scale(1.1);
+}
+
+/* midpoint */
+.node.midpoint {
+  background: rgba(255, 208, 0, 0.15);
+  border-color: #ffd000;
+  box-shadow: 0 0 15px #ffd000;
+  transform: scale(1.15);
+}
+
+/* subtle animation */
+.node {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.evaluation {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #0e141c;
+  border: 1px solid #2a3b4f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.evaluation strong {
+  color: #00ffd0;
+}

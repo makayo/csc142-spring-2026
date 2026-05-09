@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Basic Health Symmetry</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <header class="header">
+      <h1>🩺 Health Symmetry Analyzer</h1>
+      <p>Slow / Fast Pointer Visualization</p>
+    </header>
+
+    <section class="controls">
+      <input id="input" placeholder="e.g. 72, 80, 95, 80, 72" />
+      <button onclick="runCheck()">Run Analysis</button>
+    </section>
+
+    <section class="status">
+      <div class="legend">
+        <span class="slow">● Slow Pointer</span>
+        <span class="fast">● Fast Pointer</span>
+        <span class="mid">● Midpoint</span>
+      </div>
+    </section>
+
+    <section id="listView" class="list-view"></section>
+    <div id="evaluation" class="evaluation"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

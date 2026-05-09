@@ -8,18 +8,21 @@ Each folder represents a weekly assignment or project, organized to keep work st
 
 📁 Folder Structure
 * week01/
-   * Project - (React counter app)
+   * Project - React counter app
 * week02/
-   * Project - (Interactive Recipe Gallery)
-   * Project - (Task Manager App)
-   * Project - (User Profile)
+   * Project - Interactive Recipe Gallery
+   * Project - Task Manager App
+   * Project - User Profile
 * week03/
-   * Project - (Shopping List Immer)
-   * Project - (User Profile Immer)
+   * Project - Shopping List Immer
+   * Project - User Profile Immer
 * week04/
-   * Project - (Dog Query App)
-   * Project - (Crud Query App)
-
+   * Project - Dog Query App
+   * Project - Crud Query App
+* week05/
+   * Project - Basic Health Symmetry
+   * Project - Recipe Router App
+   * Project - Navigational Blog App
 ---
 
 ## 🧠 About This Repository

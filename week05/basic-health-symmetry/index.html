@@ -19,6 +19,17 @@
       <button onclick="runCheck()">Run Analysis</button>
     </section>
 
+    <!-- ALGORITHM TOGGLE -->
+    <section class="algo-toggle">
+      <span class="algo-label">Algorithm:</span>
+      <button id="btn-original" class="algo-btn active" onclick="setAlgo('original')">
+        Original &mdash; O(n) space
+      </button>
+      <button id="btn-optimized" class="algo-btn" onclick="setAlgo('optimized')">
+        Optimized &mdash; O(1) space
+      </button>
+    </section>
+
     <section class="status">
       <div class="legend">
         <span class="slow">● Slow Pointer</span>
@@ -29,6 +40,7 @@
 
     <section id="listView" class="list-view"></section>
     <div id="evaluation" class="evaluation"></div>
+
   </div>
 
   <script src="app.js"></script>

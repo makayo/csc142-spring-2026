@@ -21,6 +21,7 @@ It visualizes the algorithm step-by-step so the computation is self-explanatory 
 - Detects the midpoint visually
 - Compares both halves
 - Outputs the result with a real-time step log
+- **Switch between two algorithm implementations** — Original O(n) space and Optimized O(1) space
 
 ---
 
@@ -66,6 +67,73 @@ If any pair fails → **not symmetric**.
 
 ---
 
+## 🔁 Algorithm Toggle
+
+Two implementations are available and switchable in the UI:
+
+### Original — O(n) Space
+
+```js
+function isSymmetricFromArray(arr) {
+  let l = 0;
+  let r = arr.length - 1;
+  while (l < r) {
+    if (arr[l] !== arr[r]) return false;
+    l++;
+    r--;
+  }
+  return true;
+}
+```
+
+- Copies linked list values into an array
+- Two pointer comparison on the array
+- Easier to read and reason about
+- **Time: O(n) · Space: O(n)**
+
+---
+
+### Optimized — O(1) Space
+
+```js
+function isSymmetricOptimized(head) {
+  // find midpoint
+  let slow = head,
+    fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  // reverse second half in place
+  let prev = null,
+    curr = slow;
+  while (curr) {
+    const next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+  // compare both halves
+  let left = head,
+    right = prev;
+  while (right) {
+    if (left.value !== right.value) return false;
+    left = left.next;
+    right = right.next;
+  }
+  return true;
+}
+```
+
+- No extra array — works directly on the linked list
+- Reverses the second half in place
+- Same result, less memory
+- **Time: O(n) · Space: O(1)**
+
+> **Trade-off:** The original list is temporarily mutated during comparison. To fully restore it, reverse the second half again after the check.
+
+---
+
 ## 📊 Visualization
 
 ### Traversal Phase
@@ -82,7 +150,10 @@ If any pair fails → **not symmetric**.
 
 Real step log displayed:
 
+**Original — O(n) space**
+
 ```
+Algorithm: Original — O(n) space
 Input: [1, 2, 3, 2, 1]
 Midpoint: 3
 Result: SYMMETRIC ✔
@@ -91,16 +162,41 @@ Process:
   Step 2: slow → [3]  fast → [1]
   → Midpoint detected: [3]
   → Full comparison: all pairs matched ✔
+O(n) time · O(n) space · array copy used for comparison
+```
+
+**Optimized — O(1) space**
+
+```
+Algorithm: Optimized — O(1) space
+Input: [1, 2, 3, 2, 1]
+Midpoint: 3
+Result: SYMMETRIC ✔
+Process:
+  Step 1: slow → [2]  fast → [3]
+  Step 2: slow → [3]  fast → [1]
+  → Midpoint detected: [3]
+  → Full comparison: all pairs matched ✔
+O(n) time · O(1) space · in-place reversal — no extra array
 ```
 
 ---
 
 ## ⏱ Complexity
 
+### Original Solution
+
 |       | Complexity | Reason                                     |
 | ----- | ---------- | ------------------------------------------ |
 | Time  | O(n)       | Two linear passes — traversal + comparison |
 | Space | O(n)       | Values copied into array for comparison    |
+
+### Optimized Solution
+
+|       | Complexity | Reason                                            |
+| ----- | ---------- | ------------------------------------------------- |
+| Time  | O(n)       | Two linear passes — traversal + in-place reversal |
+| Space | O(1)       | No extra array — second half reversed in place    |
 
 ---
 
@@ -136,8 +232,10 @@ Process:
 1. Clone the repo
 2. Open `index.html` in a browser
 3. Enter comma-separated values in the input field
-4. Click **Run Analysis**
-5. Watch the traversal animate and the result render
+4. Select **Original** or **Optimized** algorithm using the toggle
+5. Click **Run Analysis**
+6. Watch the traversal animate and the result render
+7. Switch algorithms and run again to compare
 
 ---
 
@@ -150,6 +248,7 @@ This tool demonstrates:
 - Midpoint detection in O(n)
 - Palindrome validation
 - Real-time step-by-step visualization
+- Side-by-side algorithm comparison — O(n) space vs O(1) space
 
 Built with vanilla HTML, CSS, and JavaScript — no frameworks or dependencies.
 

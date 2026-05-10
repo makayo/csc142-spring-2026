@@ -61,10 +61,53 @@ button {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  color: #0b0f14;
 }
 
 button:hover {
   background: #00c9a7;
+}
+
+/* =========================
+   ALGORITHM TOGGLE
+========================= */
+
+.algo-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.algo-label {
+  font-size: 12px;
+  color: #7a9bbf;
+  white-space: nowrap;
+}
+
+.algo-btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid #2a3b4f;
+  background: #0e141c;
+  color: #7a9bbf;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.algo-btn:hover {
+  border-color: #00ffd0;
+  color: #00ffd0;
+  background: #0e141c;
+}
+
+.algo-btn.active {
+  background: #00ffd0;
+  color: #0b0f14;
+  border-color: #00ffd0;
 }
 
 /* =========================
@@ -105,7 +148,6 @@ button:hover {
   flex-wrap: wrap;
 }
 
-/* NODE BASE STYLE */
 .node {
   padding: 12px 16px;
   border-radius: 8px;
@@ -120,7 +162,6 @@ button:hover {
    POINTER STATES
 ========================= */
 
-/* slow pointer */
 .node.slow {
   background: rgba(0, 255, 208, 0.15);
   border-color: #00ffd0;
@@ -128,7 +169,6 @@ button:hover {
   transform: scale(1.1);
 }
 
-/* fast pointer */
 .node.fast {
   background: rgba(255, 77, 109, 0.15);
   border-color: #ff4d6d;
@@ -136,7 +176,6 @@ button:hover {
   transform: scale(1.1);
 }
 
-/* midpoint */
 .node.midpoint {
   background: rgba(255, 208, 0, 0.15);
   border-color: #ffd000;
@@ -144,12 +183,15 @@ button:hover {
   transform: scale(1.15);
 }
 
-/* subtle animation */
 .node {
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease;
 }
+
+/* =========================
+   EVALUATION PANEL
+========================= */
 
 .evaluation {
   margin-top: 20px;
@@ -158,9 +200,34 @@ button:hover {
   background: #0e141c;
   border: 1px solid #2a3b4f;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
 .evaluation strong {
+  color: #00ffd0;
+}
+
+/* =========================
+   COMPLEXITY BADGES
+========================= */
+
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.badge.original {
+  background: rgba(255, 77, 109, 0.15);
+  border: 1px solid #00ffd0;
+  color: #00ffd0;
+}
+
+.badge.optimized {
+  background: rgba(0, 255, 208, 0.12);
+  border: 1px solid #00ffd0;
   color: #00ffd0;
 }

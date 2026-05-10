@@ -33,6 +33,28 @@ class LinkedList {
 }
 
 /* =========================
+   ALGORITHM MODE
+   Tracks which function is active
+========================= */
+
+let activeAlgo = "original"; // "original" or "optimized"
+
+function setAlgo(mode) {
+    activeAlgo = mode;
+
+    document.getElementById("btn-original").classList.toggle("active", mode === "original");
+    document.getElementById("btn-optimized").classList.toggle("active", mode === "optimized");
+
+    // clear previous result when switching
+    document.getElementById("evaluation").innerHTML = "";
+    document.getElementById("listView").innerHTML = "";
+
+    VisualState.phase = "idle";
+    VisualState.result = null;
+    VisualState.steps = [];
+}
+
+/* =========================
    VISUAL STATE
 ========================= */
 
@@ -43,11 +65,13 @@ const VisualState = {
     midpoint: null,
     phase: "idle",
     result: null,
-    steps: []   // ✅ tracks each real step
+    steps: []
 };
 
 /* =========================
-   SYMMETRY CHECK (LOGIC ONLY)
+   ORIGINAL SOLUTION
+   Time:  O(n)
+   Space: O(n) — values copied into array
 ========================= */
 
 function isSymmetricFromArray(arr) {
@@ -61,6 +85,59 @@ function isSymmetricFromArray(arr) {
     }
 
     return true;
+}
+
+/* =========================
+   OPTIMIZED SOLUTION
+   Time:  O(n)
+   Space: O(1) — no extra array, in-place reversal
+========================= */
+
+function isSymmetricOptimized(head) {
+    if (!head || !head.next) return true;
+
+    // Step 1: find midpoint with slow/fast pointer
+    let slow = head;
+    let fast = head;
+
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    // Step 2: reverse the second half in place
+    let prev = null;
+    let curr = slow;
+
+    while (curr) {
+        const next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+
+    // Step 3: compare first half vs reversed second half
+    let left = head;
+    let right = prev;
+
+    while (right) {
+        if (left.value !== right.value) return false;
+        left = left.next;
+        right = right.next;
+    }
+
+    return true;
+}
+
+/* =========================
+   BUILD LINKED LIST
+   Used by optimized mode
+========================= */
+
+function buildLinkedList(values) {
+    const list = new LinkedList();
+    values.forEach(v => list.append(v));
+    return list.head;
 }
 
 /* =========================
@@ -99,19 +176,27 @@ function render() {
 
 function renderEvaluation(values, result, midpointIndex) {
     const el = document.getElementById("evaluation");
-
     const midpointValue = values[midpointIndex];
 
-    // ✅ build the real step-by-step process log
+    const isOptimized = activeAlgo === "optimized";
+
+    const complexityLabel = isOptimized
+        ? `<span class="badge optimized">O(n) time &nbsp;·&nbsp; O(1) space &nbsp;·&nbsp; in-place reversal — no extra array</span>`
+        : `<span class="badge original">O(n) time &nbsp;·&nbsp; O(n) space &nbsp;·&nbsp; array copy used for comparison</span>`;
+
     const stepLog = VisualState.steps.map((s, i) =>
         `Step ${i + 1}: slow → [${s.slowVal}]  fast → [${s.fastVal}]`
     ).join("<br>");
 
     el.innerHTML = `
+        <div><strong>Algorithm:</strong> ${isOptimized ? "Optimized — O(1) space" : "Original — O(n) space"}</div>
         <div><strong>Input:</strong> [${values.join(", ")}]</div>
         <div><strong>Midpoint:</strong> ${midpointValue ?? "N/A"}</div>
         <div><strong>Result:</strong> ${result ? "SYMMETRIC ✔" : "NOT SYMMETRIC ✖"}</div>
-        <div style="margin-top:8px"><strong>Process:</strong><br>${stepLog}<br>→ Midpoint detected: [${midpointValue}]<br>→ Full comparison: ${result ? "all pairs matched ✔" : "mismatch found ✖"}</div>
+        <div style="margin-top:8px"><strong>Process:</strong><br>${stepLog}<br>
+        → Midpoint detected: [${midpointValue}]<br>
+        → Full comparison: ${result ? "all pairs matched ✔" : "mismatch found ✖"}</div>
+        <div style="margin-top:10px">${complexityLabel}</div>
     `;
 }
 
@@ -124,14 +209,19 @@ function animatePointers() {
 
     if (VisualState.fastIndex >= n - 1) {
 
-        // midpoint detected
         VisualState.midpoint = VisualState.slowIndex;
         VisualState.phase = "midpoint";
         render();
 
         const values = VisualState.nodes.map(n => n.value);
 
-        VisualState.result = isSymmetricFromArray(values);
+        // run whichever algorithm is active
+        if (activeAlgo === "optimized") {
+            const head = buildLinkedList(values);
+            VisualState.result = isSymmetricOptimized(head);
+        } else {
+            VisualState.result = isSymmetricFromArray(values);
+        }
 
         VisualState.phase = "done";
         render();
@@ -143,14 +233,12 @@ function animatePointers() {
     VisualState.slowIndex += 1;
     VisualState.fastIndex += 2;
 
-    // ✅ record this step with actual values
     VisualState.steps.push({
         slowVal: VisualState.nodes[VisualState.slowIndex].value,
         fastVal: VisualState.nodes[Math.min(VisualState.fastIndex, n - 1)].value
     });
 
     render();
-
     setTimeout(animatePointers, 600);
 }
 
@@ -166,14 +254,15 @@ function runCheck() {
         .map(v => Number(v.trim()))
         .filter(v => !isNaN(v));
 
-    // reset state
+    if (!values.length) return;
+
     VisualState.nodes = values.map(v => ({ value: v }));
     VisualState.slowIndex = 0;
     VisualState.fastIndex = 0;
     VisualState.midpoint = null;
     VisualState.phase = "moving";
     VisualState.result = null;
-    VisualState.steps = [];   // ✅ reset steps on each run
+    VisualState.steps = [];
 
     render();
     animatePointers();

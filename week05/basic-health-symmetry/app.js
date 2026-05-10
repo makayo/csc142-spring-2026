@@ -74,10 +74,18 @@ function render() {
         const div = document.createElement("div");
         div.className = "node";
 
-        if (i === VisualState.slowIndex) div.classList.add("slow");
-        if (i === VisualState.fastIndex) div.classList.add("fast");
+        // ✅ FIX 1: only show slow/fast pointers while animation is running
+        if (VisualState.phase !== "done" && VisualState.phase !== "midpoint") {
+            if (i === VisualState.slowIndex) div.classList.add("slow");
+            if (i === VisualState.fastIndex) div.classList.add("fast");
+        }
 
         if (VisualState.phase === "midpoint" && i === VisualState.midpoint) {
+            div.classList.add("midpoint");
+        }
+
+        // ✅ FIX 1: on done, only highlight the midpoint node
+        if (VisualState.phase === "done" && i === VisualState.midpoint) {
             div.classList.add("midpoint");
         }
 
@@ -90,14 +98,16 @@ function render() {
    EVALUATION PANEL
 ========================= */
 
-function renderEvaluation(values, result, midpoint) {
+function renderEvaluation(values, result, midpointIndex) {
     const el = document.getElementById("evaluation");
+
+    // ✅ FIX 2: show the actual value at the midpoint, not the index
+    const midpointValue = values[midpointIndex];
 
     el.innerHTML = `
     <div><strong>Input:</strong> [${values.join(", ")}]</div>
-    <div><strong>Midpoint:</strong> ${midpoint ?? "N/A"}</div>
-    <div><strong>Result:</strong> ${result ? "SYMMETRIC ✔" : "NOT SYMMETRIC ✖"
-        }</div>
+    <div><strong>Midpoint:</strong> ${midpointValue ?? "N/A"}</div>
+    <div><strong>Result:</strong> ${result ? "SYMMETRIC ✔" : "NOT SYMMETRIC ✖"}</div>
     <div><strong>Process:</strong> Slow/fast pointer traversal → midpoint detection → full comparison</div>
   `;
 }
@@ -109,19 +119,18 @@ function renderEvaluation(values, result, midpoint) {
 function animatePointers() {
     const n = VisualState.nodes.length;
 
-    if (VisualState.fastIndex >= n || VisualState.fastIndex === null) {
+    if (VisualState.fastIndex >= n - 1) {
 
         // midpoint detected
         VisualState.midpoint = VisualState.slowIndex;
         VisualState.phase = "midpoint";
+        render();
 
         const values = VisualState.nodes.map(n => n.value);
 
-        // final evaluation
         VisualState.result = isSymmetricFromArray(values);
 
         VisualState.phase = "done";
-
         render();
         renderEvaluation(values, VisualState.result, VisualState.midpoint);
 

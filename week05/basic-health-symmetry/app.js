@@ -42,7 +42,8 @@ const VisualState = {
     fastIndex: 0,
     midpoint: null,
     phase: "idle",
-    result: null
+    result: null,
+    steps: []   // ✅ tracks each real step
 };
 
 /* =========================
@@ -74,7 +75,6 @@ function render() {
         const div = document.createElement("div");
         div.className = "node";
 
-        // ✅ FIX 1: only show slow/fast pointers while animation is running
         if (VisualState.phase !== "done" && VisualState.phase !== "midpoint") {
             if (i === VisualState.slowIndex) div.classList.add("slow");
             if (i === VisualState.fastIndex) div.classList.add("fast");
@@ -84,7 +84,6 @@ function render() {
             div.classList.add("midpoint");
         }
 
-        // ✅ FIX 1: on done, only highlight the midpoint node
         if (VisualState.phase === "done" && i === VisualState.midpoint) {
             div.classList.add("midpoint");
         }
@@ -101,15 +100,19 @@ function render() {
 function renderEvaluation(values, result, midpointIndex) {
     const el = document.getElementById("evaluation");
 
-    // ✅ FIX 2: show the actual value at the midpoint, not the index
     const midpointValue = values[midpointIndex];
 
+    // ✅ build the real step-by-step process log
+    const stepLog = VisualState.steps.map((s, i) =>
+        `Step ${i + 1}: slow → [${s.slowVal}]  fast → [${s.fastVal}]`
+    ).join("<br>");
+
     el.innerHTML = `
-    <div><strong>Input:</strong> [${values.join(", ")}]</div>
-    <div><strong>Midpoint:</strong> ${midpointValue ?? "N/A"}</div>
-    <div><strong>Result:</strong> ${result ? "SYMMETRIC ✔" : "NOT SYMMETRIC ✖"}</div>
-    <div><strong>Process:</strong> Slow/fast pointer traversal → midpoint detection → full comparison</div>
-  `;
+        <div><strong>Input:</strong> [${values.join(", ")}]</div>
+        <div><strong>Midpoint:</strong> ${midpointValue ?? "N/A"}</div>
+        <div><strong>Result:</strong> ${result ? "SYMMETRIC ✔" : "NOT SYMMETRIC ✖"}</div>
+        <div style="margin-top:8px"><strong>Process:</strong><br>${stepLog}<br>→ Midpoint detected: [${midpointValue}]<br>→ Full comparison: ${result ? "all pairs matched ✔" : "mismatch found ✖"}</div>
+    `;
 }
 
 /* =========================
@@ -140,6 +143,12 @@ function animatePointers() {
     VisualState.slowIndex += 1;
     VisualState.fastIndex += 2;
 
+    // ✅ record this step with actual values
+    VisualState.steps.push({
+        slowVal: VisualState.nodes[VisualState.slowIndex].value,
+        fastVal: VisualState.nodes[Math.min(VisualState.fastIndex, n - 1)].value
+    });
+
     render();
 
     setTimeout(animatePointers, 600);
@@ -164,6 +173,7 @@ function runCheck() {
     VisualState.midpoint = null;
     VisualState.phase = "moving";
     VisualState.result = null;
+    VisualState.steps = [];   // ✅ reset steps on each run
 
     render();
     animatePointers();

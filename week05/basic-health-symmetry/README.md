@@ -1,216 +1,160 @@
-# 🩺 Basic Health Symmetry Analyzer
+# 🩺 Health Symmetry Analyzer
 
-A visual + algorithmic tool that analyzes a sequence of health metrics stored in a singly linked list and determines whether the sequence is symmetrical (palindrome).
+A visual algorithm tool that analyzes a sequence of health metrics stored in a singly linked list and determines whether the sequence is symmetrical.
 
-It also visualizes how the algorithm works using a slow/fast pointer traversal model.
-
----
-
-# 🧠 Problem Overview
-
-In healthcare data analysis, patient metrics such as heart rate or blood sugar are often recorded as time-series data.
-
-This system checks whether those values form a **symmetrical pattern**, which may indicate:
-
-- Return to baseline health conditions
-- Cyclic physiological behavior
-- Stability or consistency in patient state
+> **Note:** This is a simulated visualization tool built to demonstrate linked list palindrome detection. It uses health metrics as sample data to represent a real-world use case — it is not a clinical application.
 
 ---
 
-# 🎯 Objective
+## 🧠 Overview
 
-Given a sequence of values, determine whether the linked list is a palindrome.
+This tool takes a sequence of numeric values and checks whether they form a palindrome — reading the same forwards and backwards.
 
-You must:
-
-- Build a singly linked list
-- Traverse using slow/fast pointer technique
-- Detect midpoint
-- Compare mirrored halves
-- Output result (symmetric or not)
+It visualizes the algorithm step-by-step so the computation is self-explanatory without external documentation.
 
 ---
 
-# 🧱 Data Structure
+## 🎯 What It Does
 
-### Node Definition
+- Builds a singly linked list from user input
+- Traverses it using the slow/fast pointer technique
+- Detects the midpoint visually
+- Compares both halves
+- Outputs the result with a real-time step log
 
-Each node represents a health metric:
+---
+
+## 🧱 Data Structure
+
+### Node
+
+Each node holds:
 
 - `value` → numeric health metric
-- `next` → pointer to next node
+- `next` → pointer to the next node
 
 ### Linked List
 
 Supports:
 
-- Sequential insertion
-- Traversal
+- Sequential insertion via `append()`
 - Head reference access
+- Full traversal
 
 ---
 
-# ⚙️ Algorithm (Core Logic)
+## ⚙️ Algorithm
 
-## Step 1: Build Linked List
+### Step 1 — Build the List
 
-Convert input array into a singly linked list.
+Convert input values into a singly linked list.
 
----
+### Step 2 — Find the Midpoint
 
-## Step 2: Find Midpoint (Slow/Fast Pointer)
+Use the slow/fast pointer technique:
 
 - `slow` moves 1 step at a time
 - `fast` moves 2 steps at a time
 
-When `fast` reaches the end:
+When `fast` reaches the end → `slow` is at the midpoint.
 
-👉 `slow` is at midpoint
+### Step 3 — Compare Both Halves
 
----
-
-## Step 3: Reverse Second Half
-
-Reverse nodes starting from midpoint.
+Two pointers walk inward from both ends.
+If every pair matches → **symmetric**.
+If any pair fails → **not symmetric**.
 
 ---
 
-## Step 4: Compare Halves
+## 📊 Visualization
 
-Compare:
+### Traversal Phase
 
-- Left half (original order)
-- Right half (reversed order)
+- **Cyan** → slow pointer
+- **Red** → fast pointer
+- Nodes animate step by step
 
-If all values match → symmetric
+### Midpoint Phase
 
----
+- **Yellow** → midpoint node highlighted
 
-# 📊 Visualization System (UI Behavior)
+### Evaluation Phase
 
-The UI is designed to **explain the algorithm visually**:
+Real step log displayed:
 
-## 1. Input Phase
-
-User enters values:
-
-1,2,3,2,1
-
----
-
-## 2. Traversal Phase
-
-- Slow pointer highlights cyan
-- Fast pointer highlights red
-- Nodes animate step-by-step
+```
+Input: [1, 2, 3, 2, 1]
+Midpoint: 3
+Result: SYMMETRIC ✔
+Process:
+  Step 1: slow → [2]  fast → [3]
+  Step 2: slow → [3]  fast → [1]
+  → Midpoint detected: [3]
+  → Full comparison: all pairs matched ✔
+```
 
 ---
 
-## 3. Midpoint Phase
+## ⏱ Complexity
 
-- Midpoint node is highlighted (yellow/orange)
-- Split point becomes visible
-
----
-
-## 4. Evaluation Phase
-
-Final result panel appears:
-
-### Example Output
-
-Input: [1,2,3,2,1]  
-Midpoint: 2  
-Result: SYMMETRIC ✔  
-Process: slow/fast traversal → midpoint detection → comparison
+|       | Complexity | Reason                                     |
+| ----- | ---------- | ------------------------------------------ |
+| Time  | O(n)       | Two linear passes — traversal + comparison |
+| Space | O(n)       | Values copied into array for comparison    |
 
 ---
 
-# ⏱ Complexity Analysis
+## 🧪 Test Cases
 
-## Time Complexity
+### ✔ Symmetric
 
-O(n)
+| Input (copy-paste)   | Midpoint | Result      |
+| -------------------- | -------- | ----------- |
+| `1, 2, 3, 2, 1`      | 3        | SYMMETRIC ✔ |
+| `4, 4, 4, 4`         | 4        | SYMMETRIC ✔ |
+| `10, 20, 30, 20, 10` | 30       | SYMMETRIC ✔ |
 
-We traverse the list a constant number of times.
+### ✔ Edge Cases
 
----
+| Input (copy-paste) | Result          | Reason              |
+| ------------------ | --------------- | ------------------- |
+| `5`                | SYMMETRIC ✔     | Single node         |
+| `7, 7`             | SYMMETRIC ✔     | Two equal nodes     |
+| `1, 2`             | NOT SYMMETRIC ✖ | Two different nodes |
 
-## Space Complexity
+### ✖ Not Symmetric
 
-O(1)
-
-No extra data structures are required (in-place reversal used conceptually).
-
----
-
-# 🧪 Test Cases
-
-## ✔ Normal Cases
-
-- [1,2,3,2,1] → true
-- [4,4,4,4] → true
-- [10,20,30,20,10] → true
-
----
-
-## ✔ Edge Cases
-
-- [] → true (empty list is symmetric)
-- [5] → true (single node)
-- [1,2] → false (two different values)
+| Input (copy-paste) | Midpoint | Result          |
+| ------------------ | -------- | --------------- |
+| `1, 2, 3, 2, 8`    | 3        | NOT SYMMETRIC ✖ |
+| `9, 5, 2, 5, 8`    | 2        | NOT SYMMETRIC ✖ |
 
 ---
 
-## ✔ Non-Symmetric Case
+## 🖥 How to Run
 
-- [1,2,3,2,8,4,9,4] → false
-
----
-
-# 🧠 Key Insights
-
-This project demonstrates:
-
-- Linked list construction
-- Two-pointer traversal technique (slow/fast pointer)
-- Midpoint detection in O(n)
-- Symmetry (palindrome) validation
-- Algorithm visualization through UI state
+1. Clone the repo
+2. Open `index.html` in a browser
+3. Enter comma-separated values in the input field
+4. Click **Run Analysis**
+5. Watch the traversal animate and the result render
 
 ---
 
-# 🖥 How It Works (Execution Flow)
+## 🚀 Summary
 
-1. User inputs values
-2. Linked list is constructed
-3. Slow/fast pointer animation runs
-4. Midpoint is detected visually
-5. Second half is logically compared
-6. Final evaluation panel is rendered
+This tool demonstrates:
 
----
-
-# 📌 FINAL RUN EXAMPLE
-
-Input:
-1,2,3,2,1
-
-Output:
-✔ SYMMETRIC  
-Midpoint: 3  
-Process: traversal → midpoint → comparison
-
----
-
-# 🚀 SUMMARY
-
-This system is a self-explaining algorithm visualizer that demonstrates:
-
+- Singly linked list construction
 - Slow/fast pointer traversal
-- Linked list midpoint detection
+- Midpoint detection in O(n)
 - Palindrome validation
-- Real-time process visualization
+- Real-time step-by-step visualization
 
-The output is designed so that **the data itself explains the computation without external explanation.**
+Built with vanilla HTML, CSS, and JavaScript — no frameworks or dependencies.
+
+---
+
+## 👨‍💻 Author
+
+**Mark Yosinao**

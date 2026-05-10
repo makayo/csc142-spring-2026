@@ -1,4 +1,4 @@
-# Week 5 Recipe Router App (React Router + Vite)
+# # Recipe Router App — FlavorHub
 
 ## About
 

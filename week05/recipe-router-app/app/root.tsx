@@ -1,29 +1,14 @@
 import {
-  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  Link,
 } from "react-router";
-
-import type { Route } from "./+types/root";
 import "./app.css";
 
-export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-];
-
-export function Layout({ children }: { children: React.ReactNode }) {
+export default function App() {
   return (
     <html lang="en">
       <head>
@@ -32,44 +17,124 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body
+        style={{
+          margin: 0,
+          fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+          background: "#fafaf9",
+        }}
+      >
+        <nav
+          style={{
+            background: "#fff",
+            borderBottom: "1px solid #f0ede8",
+            position: "sticky",
+            top: 0,
+            zIndex: 100,
+            boxShadow: "0 1px 12px rgba(0,0,0,0.06)",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: 1100,
+              margin: "0 auto",
+              padding: "0 24px",
+              height: 64,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 800,
+                  fontSize: 20,
+                  color: "#1a1a1a",
+                  letterSpacing: "-0.5px",
+                  fontFamily: "'Inter', sans-serif",
+                }}
+              >
+                Flavor<span style={{ color: "#f97316" }}>Hub</span>
+              </span>
+            </Link>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Link
+                to="/"
+                style={{
+                  textDecoration: "none",
+                  color: "#555",
+                  fontWeight: 500,
+                  fontSize: 15,
+                  padding: "8px 16px",
+                  borderRadius: 8,
+                  fontFamily: "'Inter', sans-serif",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#fef3ec";
+                  e.currentTarget.style.color = "#f97316";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "#555";
+                }}
+              >
+                Home
+              </Link>
+              <Link
+                to="/gallery"
+                style={{
+                  textDecoration: "none",
+                  background: "#f97316",
+                  color: "#fff",
+                  fontWeight: 600,
+                  fontSize: 15,
+                  padding: "8px 20px",
+                  borderRadius: 8,
+                  fontFamily: "'Inter', sans-serif",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#ea6c0a";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#f97316";
+                }}
+              >
+                Browse Recipes
+              </Link>
+            </div>
+          </div>
+        </nav>
+
+        <Outlet />
+
+        <footer
+          style={{
+            marginTop: 80,
+            borderTop: "1px solid #f0ede8",
+            padding: "32px 24px",
+            textAlign: "center",
+            color: "#999",
+            fontSize: 14,
+            background: "#fff",
+          }}
+        >
+          <p style={{ margin: 0 }}>
+            FlavorHub — Discover recipes from around the world
+          </p>
+        </footer>
+
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
-  );
-}
-
-export default function App() {
-  return <Outlet />;
-}
-
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
-  let stack: string | undefined;
-
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
-  }
-
-  return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
   );
 }

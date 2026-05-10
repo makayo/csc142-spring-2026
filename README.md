@@ -1,60 +1,38 @@
-# CSC142 - Spring 2026
+# Projects — Mark Yosinao
 
-This repository is a collection of programming projects and assignments completed for CSC142 (Spring 2026).
-
-Each folder represents a weekly assignment or project, organized to keep work structured and easy to navigate.
-
----
-
-📁 Folder Structure
-
-- week01/
-  - Project - React counter app
-- week02/
-  - Project - Interactive Recipe Gallery
-  - Project - Task Manager App
-  - Project - User Profile
-- week03/
-  - Project - Shopping List Immer
-  - Project - User Profile Immer
-- week04/
-  - Project - Dog Query App
-  - Project - Crud Query App
-- week05/
-  - Project - Basic Health Symmetry
-  - Project - Recipe Router App
-  - Project - Navigational Blog App
+A collection of frontend development projects built with React, TypeScript, and modern web technologies.
+Each folder is an independent project showcasing different concepts and patterns.
 
 ---
 
-## 🧠 About This Repository
+## Projects
 
-This repo serves as a central place for all coursework projects. Each project is stored in its own folder under a weekly structure.
+### React Fundamentals
+- week01/ — Counter App — Components, state management, event handling
 
-The goal is to:
+### State & Data Management
+- week02/ — Interactive Recipe Gallery, Task Manager App, User Profile
+- week03/ — Shopping List (Immer), User Profile (Immer)
 
-- Keep projects organized
-- Separate each assignment clearly
-- Make grading and review simple
-- Maintain a clean development workflow
+### Server State & API Integration
+- week04/ — Dog Query App, CRUD Query App (TanStack Query + JSONPlaceholder)
 
----
-
-## 🚀 Current Project
-
-**Week 01 - Counter App**
-
-A simple React application demonstrating:
-
-- Components
-- State management
-- Event handling
-
-Location: `week01/counter`
+### Routing & Navigation
+- week05/ — Health Symmetry Checker, FlavorHub Recipe Router, Blog App
 
 ---
 
-## 📌 Notes
+## Tech Stack
 
-- Each week will contain projects
-- All projects are independent but stored in a single repository
+- React 18
+- TypeScript
+- Vite
+- React Router v7
+- TanStack Query v5
+- Inline CSS / Component-scoped styles
+
+---
+
+## Author
+
+Mark Yosinao

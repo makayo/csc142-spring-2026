@@ -73,11 +73,11 @@ The blog documents a real development journey across ten weeks of building with 
     ├── data/
     │   └── posts.js              # Blog post data — id, title, category, date, author, summary, content
     ├── routes/
-    │   ├── _index.tsx            # Home feed — list of all posts with category and date
-    │   ├── about.tsx             # About page — blog description and tech stack
-    │   └── post.$postId.tsx      # Dynamic post view — full content loaded by ID
+    │   ├── _index.jsx            # Home feed — list of all posts with category and date
+    │   ├── about.jsx             # About page — blog description and tech stack
+    │   └── post.$postId.jsx      # Dynamic post view — full content loaded by ID
     ├── routes.ts                 # Route config — index, about, post/:postId
-    ├── root.tsx                  # Root layout — navbar, outlet, footer
+    ├── root.jsx                  # Root layout — navbar, outlet, footer
     └── app.css                   # Global base styles
 
 ---
@@ -86,9 +86,9 @@ The blog documents a real development journey across ten weeks of building with 
 
 | Path          | Component        | Description                           |
 |---------------|------------------|---------------------------------------|
-| /             | _index.tsx       | Home feed — all posts listed          |
-| /about        | about.tsx        | About page — blog and author info     |
-| /post/:postId | post.$postId.tsx | Dynamic post detail page loaded by ID |
+| /             | _index.jsx       | Home feed — all posts listed          |
+| /about        | about.jsx        | About page — blog and author info     |
+| /post/:postId | post.$postId.jsx | Dynamic post detail page loaded by ID |
 
 ---
 

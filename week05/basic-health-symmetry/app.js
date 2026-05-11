@@ -139,7 +139,6 @@ function buildLinkedList(values) {
     values.forEach(v => list.append(v));
     return list.head;
 }
-
 /* =========================
    UI RENDER
 ========================= */

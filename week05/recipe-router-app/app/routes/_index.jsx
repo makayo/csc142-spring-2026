@@ -4,21 +4,18 @@ import { recipes } from "../data/recipes";
 const categories = [
   {
     label: "Main Dishes",
-    emoji: "🍝",
     category: "recipe",
     image: "/gallery/id1_spaghetti.jpg",
     desc: "Hearty meals for any occasion",
   },
   {
     label: "Local & Ethnic",
-    emoji: "🌏",
     category: "local",
     image: "/gallery/id4_adobo.jpg",
     desc: "Traditional flavors from home",
   },
   {
     label: "Desserts",
-    emoji: "🍰", // Desserts
     category: "dessert",
     image: "/gallery/tiramisu.jpg",
     desc: "Sweet treats and indulgences",
@@ -94,7 +91,7 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Category Cards with Background Images */}
+      {/* Category Cards */}
       <section style={{ marginBottom: 64 }}>
         <h2
           style={{
@@ -134,22 +131,13 @@ export default function Home() {
                   e.currentTarget.style.transform = "translateY(-5px)";
                   e.currentTarget.style.boxShadow =
                     "0 16px 40px rgba(0,0,0,0.2)";
-                  const img = e.currentTarget.querySelector(
-                    "img",
-                  ) as HTMLImageElement;
-                  if (img) img.style.transform = "scale(1.08)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow =
                     "0 4px 16px rgba(0,0,0,0.12)";
-                  const img = e.currentTarget.querySelector(
-                    "img",
-                  ) as HTMLImageElement;
-                  if (img) img.style.transform = "scale(1)";
                 }}
               >
-                {/* Background Image */}
                 <img
                   src={cat.image}
                   alt={cat.label}
@@ -159,14 +147,11 @@ export default function Home() {
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                    transition: "transform 0.4s ease",
                   }}
                   onError={(e) => {
                     e.currentTarget.src = "/gallery/fallback.jpg";
                   }}
                 />
-
-                {/* Dark gradient overlay */}
                 <div
                   style={{
                     position: "absolute",
@@ -175,8 +160,6 @@ export default function Home() {
                       "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)",
                   }}
                 />
-
-                {/* Text content */}
                 <div
                   style={{
                     position: "absolute",
@@ -192,7 +175,6 @@ export default function Home() {
                       fontSize: 20,
                       fontWeight: 800,
                       color: "#fff",
-                      letterSpacing: "-0.3px",
                     }}
                   >
                     {cat.label}
@@ -210,7 +192,6 @@ export default function Home() {
                     style={{
                       display: "inline-block",
                       background: "rgba(255,255,255,0.2)",
-                      backdropFilter: "blur(4px)",
                       color: "#fff",
                       fontSize: 12,
                       fontWeight: 600,

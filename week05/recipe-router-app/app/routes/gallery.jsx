@@ -14,19 +14,19 @@ export default function Gallery() {
   const localFoods  = filtered.filter((r) => r.category === "local");
   const desserts    = filtered.filter((r) => r.category === "dessert");
 
-  const badgeStyle = (category: string) => ({
+  const badgeStyle = (category) => ({
     display: "inline-block",
     padding: "2px 8px",
     borderRadius: 20,
     fontSize: 10,
     fontWeight: 700,
     letterSpacing: "0.04em",
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     background: category === "recipe" ? "#fef3ec" : category === "local" ? "#fef2f2" : "#fefce8",
     color: category === "recipe" ? "#f97316" : category === "local" ? "#ef4444" : "#ca8a04",
   });
 
-  const renderCards = (items: typeof recipes) =>
+  const renderCards = (items) =>
     items.map((recipe) => (
       <Link key={recipe.id} to={`/recipe/${recipe.id}`} style={{ textDecoration: "none", color: "inherit" }}>
         <div
@@ -55,7 +55,7 @@ export default function Gallery() {
       </Link>
     ));
 
-  const filterBtn = (label: string, value: string, color: string) => (
+  const filterBtn = (label, value, color) => (
     <button
       onClick={() => setSearchParams(value === "all" ? {} : { category: value })}
       style={{
@@ -70,7 +70,7 @@ export default function Gallery() {
     </button>
   );
 
-  const sectionHeader = (title: string, count: number, color: string) => (
+  const sectionHeader = (title, count, color) => (
     <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, marginTop: 48 }}>
       <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: "#1a1a1a", letterSpacing: "-0.3px" }}>
         {title}
@@ -83,7 +83,6 @@ export default function Gallery() {
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 24px 64px" }}>
-
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 24, flexWrap: "wrap", gap: 16 }}>
         <div>
           <h1 style={{ margin: "0 0 6px", fontSize: 28, fontWeight: 800, color: "#1a1a1a", letterSpacing: "-0.5px" }}>
@@ -127,7 +126,6 @@ export default function Gallery() {
           </div>
         </>
       )}
-
     </div>
   );
 }

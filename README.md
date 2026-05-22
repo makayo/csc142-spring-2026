@@ -36,8 +36,6 @@ Each folder is an independent project showcasing different concepts and patterns
 
 ## Tech Stack
 
-## Tech Stack
-
 - React 19
 - TypeScript
 - Vite

@@ -1,0 +1,14 @@
+START
+curr = head // the node we are currently visiting
+prev = None // the node that should come before curr in the reversed list
+
+WHILE curr is not None:
+    nxt = curr.next // temporary pointer that remembers where the list continues so we don’t lose access to the rest of the nodes
+    curr.next = prev
+    prev = curr
+    curr = nxt
+
+head = prev
+END
+
+

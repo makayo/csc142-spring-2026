@@ -50,7 +50,10 @@ npm test
 2. `toggleTheme` switches from light to dark
 3. `toggleTheme` switches back from dark to light
 
-**Edge cases** 4. Toggling twice returns to the original theme — no state leak 5. Theme value is accessible from any depth via context 6. Toggling 10 times lands back on the correct theme
+**Edge cases** 
+4. Toggling twice returns to the original theme — no state leak 
+5. Theme value is accessible from any depth via context 
+6. Toggling 10 times lands back on the correct theme
 
 ## Project Structure
 

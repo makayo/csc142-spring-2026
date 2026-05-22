@@ -30,7 +30,7 @@ Each folder is an independent project showcasing different concepts and patterns
 
 ### Forms & Server State
 
-- week07/ — Ecommerce Order Processing System, React Hook Form + TanStack Query Profile App
+- week07/ — Ecommerce Order Processing System, React Hook Form + TanStack Query Profile App, User Registration Form
 
 ---
 

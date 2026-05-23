@@ -9,7 +9,7 @@ This project implements a user profile form that separates server state (TanStac
 ## Features
 
 - Fetches profile data from `http://localhost:3001/profile` on mount
-- Form auto-populates via `useEffect` + `reset()`
+- Form auto-populates via `useEffect + reset()`
 - Save Changes button disabled until form is dirty (`isDirty`)
 - Button shows "Saving..." during pending mutation (`isPending`)
 - `conflict@example.com` triggers a 409 error displayed inline
@@ -27,52 +27,79 @@ This project implements a user profile form that separates server state (TanStac
 
 ## Getting Started
 
-### 1. Install dependencies
+### Prerequisites
 
+- Node.js installed
+- npm installed
+
+### Step 1 — Install dependencies
+
+```bash
 npm install
+```
 
-### 2. Start the backend (from week07 folder)
+### Step 2 — Start the mock backend (JSON Server)
 
+```bash
 npx json-server --watch db.json --port 3001
+```
 
-### 3. Start the frontend
+Backend runs at `http://localhost:3001`
 
+> ⚠️ Start this BEFORE the frontend. The app will not load profile data without it.
+
+### Step 3 — Start the frontend (new terminal)
+
+```bash
 npm run dev
+```
 
-Open http://localhost:5173
+App runs at `http://localhost:5173`
+
+### Step 4 — Open browser
+
+Navigate to `http://localhost:5173`
 
 ## Running Tests
 
+Open a third terminal and run:
+
+```bash
 npm test
+```
 
-6 tests — 3 normal, 3 edge cases.
+### Test Coverage (6 tests)
 
-**Normal**
+**Normal cases:**
 
 1. Loads and displays profile data from server
 2. Save Changes button disabled when form is pristine
 3. Save Changes button enables when a field is modified
 
-**Edge** 4. conflict@example.com triggers 409 error under email field 5. Loading state renders while fetch is in progress 6. Error state renders when server fetch fails
+**Edge cases:**
+
+4. `conflict@example.com` triggers 409 error under email field
+5. Loading state renders while fetch is in progress
+6. Error state renders when server fetch fails
 
 ## Project Structure
 
+```
 src/
 ├── api/profileApi.ts
 ├── components/ProfileForm.tsx
 ├── test/ProfileForm.test.tsx
 └── main.tsx
 
+```
+
 ## Key Concepts
 
-**useQuery** — Fetches profile on mount, tracks isLoading/isError, caches under ["userProfile"].
+- **useQuery** — Fetches profile on mount, tracks `isLoading`/`isError`, caches under `["userProfile"]`
+- **useMutation** — Wraps PUT request. On success invalidates cache and resets form. On error maps 409 to field error
+- **isDirty** — Save button stays disabled until a real change is made
+- **setError** — Server validation errors injected directly into form field state
 
-**useMutation** — Wraps PUT request. On success invalidates cache and resets form. On error maps 409 to field error.
+## Author
 
-**isDirty** — Save button stays disabled until a real change is made.
-
-**setError** — Server validation errors injected directly into form field state.
-
----
-
-Author: Mark Yosinao
+Mark Yosinao

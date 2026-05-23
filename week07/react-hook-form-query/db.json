@@ -1,9 +1,9 @@
 {
   "profile": {
     "id": 1,
-    "username": "Joey Daley",
-    "email": "joDaley@emailcom",
-    "bio": "frontend developer\n",
+    "username": "Joe Dale",
+    "email": "joDale@emailcom",
+    "bio": "backend developer\n",
     "notifications": true
   },
   "$schema": "./node_modules/json-server/schema.json"

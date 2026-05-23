@@ -41,7 +41,7 @@ npm install
 ### Step 2 — Start the mock backend (JSON Server)
 
 ```bash
-npx json-server --watch db.json --port 3001
+npx json-server db.json --port 3001
 ```
 
 Backend runs at `http://localhost:3001`

@@ -1,77 +1,41 @@
-# React Hook Form + TanStack Query Profile App
-
-A React application that demonstrates server-state management and form handling using **TanStack Query (React Query)** and **React Hook Form**, backed by a local JSON Server mock API.
-
-## Overview
-
-This project implements a user profile editor that separates concerns between:
-- **Server state** — fetched and cached via TanStack Query (`useQuery`, `useMutation`)
-- **Form state** — managed via React Hook Form (`register`, `reset`, `setError`, `isDirty`)
-
-## Features
-
-- Fetch profile data from `http://localhost:3001/profile` on mount
-- Form auto-populates with server data via `useEffect` + `reset()`
-- Save Changes button disabled until form is dirty (`isDirty`)
-- Button shows "Saving..." and disables during pending mutation (`isPending`)
-- Conflict email detection — `conflict@example.com` triggers a 409 error displayed inline
-- Toast confirmation card on successful save
-
-## Tech Stack
-
-- React 19, Vite
-- React Hook Form
-- TanStack Query v5
-- Axios
-- JSON Server
-- Vitest + React Testing Library
-
-## Getting Started
-
-### 1. Install dependencies
-npm install
-
-### 2. Start the backend (from week07 folder)
-npx json-server --watch db.json --port 3001
-
-### 3. Start the frontend
-npm run dev
-
-Open http://localhost:5173
-
-## Running Tests
-npm test
-
-6 tests — 3 normal, 3 edge cases.
-
-**Normal**
-1. Loads and displays profile data from server
-2. Save Changes button disabled when form is pristine
-3. Save Changes button enables when a field is modified
-
-**Edge**
-4. conflict@example.com triggers 409 error under email field
-5. Loading state renders while fetch is in progress
-6. Error state renders when server fetch fails
-
-## Project Structure
-
-src/
-├── api/profileApi.ts
-├── components/ProfileForm.tsx
-├── test/ProfileForm.test.tsx
-└── main.tsx
-
-## Key Concepts
-
-**useQuery** — Fetches profile on mount, tracks isLoading/isError, caches under ["userProfile"].
-
-**useMutation** — Wraps PUT request. On success invalidates cache and resets form. On error maps 409 to field error.
-
-**isDirty** — Save button stays disabled until a real change is made.
-
-**setError** — Server validation errors injected directly into form field state.
-
----
-
-Author: Mark Yosinao
+{
+  "name": "react-hook-form-query",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.100.13",
+    "axios": "^1.16.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-hook-form": "^7.76.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.12.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/ui": "^4.1.7",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "jsdom": "^29.1.1",
+    "msw": "^2.14.6",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.59.2",
+    "vite": "^8.0.12",
+    "vitest": "^4.1.7"
+  }
+}

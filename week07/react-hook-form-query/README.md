@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+# React Hook Form + TanStack Query Profile App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A user profile editor built with React Hook Form and TanStack Query, backed by a local JSON Server mock API.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project implements a user profile form that separates server state (TanStack Query) from form state (React Hook Form), with cache invalidation, conflict detection, and a save confirmation toast.
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Fetches profile data from `http://localhost:3001/profile` on mount
+- Form auto-populates via `useEffect` + `reset()`
+- Save Changes button disabled until form is dirty (`isDirty`)
+- Button shows "Saving..." during pending mutation (`isPending`)
+- `conflict@example.com` triggers a 409 error displayed inline
+- Toast confirmation card on successful save
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19
+- Vite
+- React Hook Form
+- TanStack Query v5
+- Axios
+- JSON Server
+- Vitest + React Testing Library
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 1. Install dependencies
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+npm install
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Start the backend (from week07 folder)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+npx json-server --watch db.json --port 3001
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 3. Start the frontend
+
+npm run dev
+
+Open http://localhost:5173
+
+## Running Tests
+
+npm test
+
+6 tests — 3 normal, 3 edge cases.
+
+**Normal**
+
+1. Loads and displays profile data from server
+2. Save Changes button disabled when form is pristine
+3. Save Changes button enables when a field is modified
+
+**Edge** 4. conflict@example.com triggers 409 error under email field 5. Loading state renders while fetch is in progress 6. Error state renders when server fetch fails
+
+## Project Structure
+
+src/
+├── api/profileApi.ts
+├── components/ProfileForm.tsx
+├── test/ProfileForm.test.tsx
+└── main.tsx
+
+## Key Concepts
+
+**useQuery** — Fetches profile on mount, tracks isLoading/isError, caches under ["userProfile"].
+
+**useMutation** — Wraps PUT request. On success invalidates cache and resets form. On error maps 409 to field error.
+
+**isDirty** — Save button stays disabled until a real change is made.
+
+**setError** — Server validation errors injected directly into form field state.
+
+---
+
+Author: Mark Yosinao

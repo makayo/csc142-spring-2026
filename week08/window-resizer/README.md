@@ -12,6 +12,12 @@ npm run dev
 
 Then open `http://localhost:5173` in your browser.
 
+## How to run tests
+
+```bash
+npm run test
+```
+
 ## Assignment requirements met
 
 | Requirement               | Location in code                                                  |
@@ -34,25 +40,28 @@ Then open `http://localhost:5173` in your browser.
 
 ### Normal cases
 
-| #   | Action                                      | Expected result                                                             |
-| --- | ------------------------------------------- | --------------------------------------------------------------------------- |
-| 1   | Drag slider from left to right              | Width counter increments, background colour transitions through breakpoints |
-| 2   | Click the `md` pill                         | Simulated width jumps to 768 px, sidebar and top nav appear in the preview  |
-| 3   | Resize the real browser window with sync on | `W` and `H` values update live to match actual window dimensions            |
+| #   | Action                                      | Expected result                                              |
+| --- | ------------------------------------------- | ------------------------------------------------------------ |
+| N1  | Drag slider to the midpoint                 | Width counter updates to a value between 320–1920 px         |
+| N2  | Click the `md` pill                         | Simulated width jumps to 768 px and sidebar shows as visible |
+| N3  | Resize the real browser window with sync on | W and H values update live to match actual window dimensions |
 
 ### Edge cases
 
-| #   | Action                                                        | Expected result                                                         |
-| --- | ------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| 4   | Drag slider all the way to the left (min)                     | Width clamps at 320 px, stays on `xs` breakpoint, no negative values    |
-| 5   | Drag slider all the way to the right (max)                    | Width clamps at 1920 px, `3xl` breakpoint, no overflow                  |
-| 6   | Click `xs` pill then immediately drag slider                  | `synced` is set to false, manual control takes over with no flicker     |
-| 7   | Rapidly resize real browser window                            | Only one event listener is active; no duplicate handlers or stale state |
-| 8   | Simulate width exactly at a breakpoint boundary (e.g. 768 px) | Correct breakpoint activates at the boundary value, not one pixel off   |
+| #   | Action                                   | Expected result                                                          |
+| --- | ---------------------------------------- | ------------------------------------------------------------------------ |
+| E1  | Drag slider past the left edge (min)     | Width clamps at 320 px, xs breakpoint active, no negative values         |
+| E2  | Drag slider past the right edge (max)    | Width clamps at 1920 px, 3xl breakpoint activates                        |
+| E3  | Click a pill then resize the real window | Sync disables — real window resize no longer updates the simulated width |
 
 ## Tech stack
 
-- React 18 + Vite
+- React 19 + Vite
+- Vitest + React Testing Library for unit tests
 - `useEffect` for resize event listener and cleanup
 - `useRef` for DOM measurements and RAF handle
 - `ResizeObserver` for accurate container width measurement
+
+## Author
+
+Mark Yosinao

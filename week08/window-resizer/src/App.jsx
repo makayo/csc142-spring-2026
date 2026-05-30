@@ -13,7 +13,7 @@ const BP = [
     accent: "#ef4444",
     muted: "#fca5a5",
     ring: "rgba(239,68,68,0.25)",
-    bgAlpha: "rgba(239,68,68,0.09)",
+    bgAlpha: "rgba(239, 68, 68, 0.09)",
     tip: "Single column, bottom nav, no sidebar. Most modern smartphones in portrait mode (375–428px CSS width) land here. Tap targets must be ≥ 44px.",
     cols: 1,
     sidebar: false,
@@ -31,8 +31,8 @@ const BP = [
     accent: "#a855f7",
     muted: "#d8b4fe",
     ring: "rgba(168,85,247,0.25)",
-    bgAlpha: "rgba(168,85,247,0.09)",
-    tip: "2-column grid unlocks. This is a large phone in landscape or a small tablet in portrait. Still no sidebar — bottom nav persists.",
+    bgAlpha: "rgba(168, 85, 247, 0.09)",
+    tip: "2-column grid unlocks. This is a large phone in landscape or a small tablet in portrait. Still no sidebar — bottom nav persists. Design for both thumb reach and slightly more horizontal space.",
     cols: 2,
     sidebar: false,
     topNav: false,
@@ -49,8 +49,8 @@ const BP = [
     accent: "#0ea5e9",
     muted: "#7dd3fc",
     ring: "rgba(14,165,233,0.25)",
-    bgAlpha: "rgba(14,165,233,0.09)",
-    tip: "Sidebar appears, navigation moves to the top, 3-column grid is now usable. This is the key layout hinge point.",
+    bgAlpha: "rgba(14, 165, 233, 0.09)",
+    tip: "Sidebar appears, navigation moves to the top, 3-column grid is now usable. This is the key layout hinge point — the first breakpoint where desktop-style patterns apply.",
     cols: 3,
     sidebar: true,
     topNav: true,
@@ -67,8 +67,8 @@ const BP = [
     accent: "#22c55e",
     muted: "#86efac",
     ring: "rgba(34,197,94,0.25)",
-    bgAlpha: "rgba(34,197,94,0.09)",
-    tip: "4-column grid, full sidebar, hover states become first-class interactions. Many laptops run a browser near this width.",
+    bgAlpha: "rgba(34, 197, 94, 0.09)",
+    tip: "4-column grid, full sidebar, hover states become first-class interactions. Many laptops run a browser near this width — it's the most common desktop viewport.",
     cols: 4,
     sidebar: true,
     topNav: true,
@@ -85,8 +85,8 @@ const BP = [
     accent: "#f59e0b",
     muted: "#fcd34d",
     ring: "rgba(245,158,11,0.25)",
-    bgAlpha: "rgba(245,158,11,0.09)",
-    tip: "5-column grid. Cap your container at ~1200px max-width or text lines become too wide to read.",
+    bgAlpha: "rgba(245, 158, 11, 0.09)",
+    tip: "5-column grid. Cap your container at ~1200px max-width or text lines become too wide to read. Use the extra space for wider sidebars or secondary panels.",
     cols: 5,
     sidebar: true,
     topNav: true,
@@ -103,8 +103,8 @@ const BP = [
     accent: "#6366f1",
     muted: "#a5b4fc",
     ring: "rgba(99,102,241,0.25)",
-    bgAlpha: "rgba(99,102,241,0.09)",
-    tip: "6-column grid. Cap containers at ~1400px. Without a max-width, text lines can span 200+ characters.",
+    bgAlpha: "rgba(99, 102, 241, 0.09)",
+    tip: "6-column grid. Cap containers at ~1400px. Without a max-width, text lines can span 200+ characters — far beyond the readable 65–75 character ideal.",
     cols: 6,
     sidebar: true,
     topNav: true,
@@ -121,8 +121,8 @@ const BP = [
     accent: "#06b6d4",
     muted: "#67e8f9",
     ring: "rgba(6,182,212,0.25)",
-    bgAlpha: "rgba(6,182,212,0.09)",
-    tip: "1920px is the start of Full HD. Consider a 3-panel layout: nav | content | context. No text column should exceed 800px.",
+    bgAlpha: "rgba(6, 182, 212, 0.09)",
+    tip: "1920px is the start of Full HD — the slider maximum. Consider a 3-panel layout: nav | content | context. No text column should exceed 800px. This breakpoint covers all screens 1920px and wider.",
     cols: 7,
     sidebar: true,
     topNav: true,
@@ -131,6 +131,8 @@ const BP = [
 ];
 
 const MIN_PX = 320;
+// MAX_PX matches the 3xl min — dragging the slider all the way right lands on exactly
+// 1920px, triggering 3xl. The full 3xl range is beyond what this tool simulates.
 const MAX_PX = 1920;
 
 function getBp(w) {
@@ -138,7 +140,7 @@ function getBp(w) {
   return BP[0];
 }
 
-/* ── Mock browser preview ────────────────────── */
+/* ── The resizing mock screen ────────────────── */
 function MockScreen({ bp, previewWidth }) {
   const { cols, sidebar, topNav, bottomNav, accent, muted, bgAlpha } = bp;
   const cardCount = cols * 2;
@@ -161,6 +163,7 @@ function MockScreen({ bp, previewWidth }) {
         boxSizing: "border-box",
       }}
     >
+      {/* Top nav */}
       {topNav && (
         <div
           style={{
@@ -207,6 +210,7 @@ function MockScreen({ bp, previewWidth }) {
         </div>
       )}
 
+      {/* Body */}
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
         {sidebar && (
           <div
@@ -236,6 +240,8 @@ function MockScreen({ bp, previewWidth }) {
             ))}
           </div>
         )}
+
+        {/* Content */}
         <div style={{ flex: 1, padding: 8, overflow: "hidden" }}>
           <div
             style={{
@@ -264,6 +270,7 @@ function MockScreen({ bp, previewWidth }) {
               }}
             />
           </div>
+
           <div
             style={{
               display: "grid",
@@ -277,7 +284,7 @@ function MockScreen({ bp, previewWidth }) {
                 style={{
                   background: "#1c1c1c",
                   borderRadius: 4,
-                  padding: "6px 6px",
+                  padding: "6px",
                   border: "1px solid #252525",
                 }}
               >
@@ -313,6 +320,7 @@ function MockScreen({ bp, previewWidth }) {
         </div>
       </div>
 
+      {/* Bottom nav */}
       {bottomNav && (
         <div
           style={{
@@ -378,8 +386,7 @@ export default function App() {
   const rafRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(600);
 
-  // Measure container width for preview scaling — ResizeObserver keeps it accurate
-  // as the viewport changes, so previewWidth always fits without overflow.
+  // Measure container for preview scaling
   useEffect(() => {
     const ro = new ResizeObserver((entries) => {
       if (entries[0]) setContainerWidth(entries[0].contentRect.width);
@@ -389,7 +396,6 @@ export default function App() {
   }, []);
 
   // ── REQUIREMENT 2 & 3: Event Listener + Cleanup ──────────────────────────
-  // Synchronise windowSize with the real browser window when synced is true.
   useEffect(() => {
     if (!synced) return;
 
@@ -413,7 +419,7 @@ export default function App() {
   const simWidth = windowSize.width;
   const bp = getBp(simWidth);
 
-  // Flash on breakpoint change
+  // Flash on bp change
   useEffect(() => {
     if (prevBpName.current && prevBpName.current !== bp.name) {
       setFlash(true);
@@ -425,8 +431,6 @@ export default function App() {
 
   const pct = Math.min(Math.max((simWidth - MIN_PX) / (MAX_PX - MIN_PX), 0), 1);
 
-  // previewWidth scales between 15 % and 100 % of the measured container.
-  // Math.min clamps it so it can never exceed the container and cause overflow.
   const MIN_PREVIEW = containerWidth * 0.15;
   const previewWidth = Math.min(
     MIN_PREVIEW + pct * (containerWidth - MIN_PREVIEW),
@@ -483,8 +487,6 @@ export default function App() {
   return (
     <div
       style={{
-        // FIX: width + boxSizing ensure padding is included in the element's
-        // total width, preventing the horizontal overflow the user reported.
         width: "100%",
         boxSizing: "border-box",
         minHeight: "100vh",
@@ -499,8 +501,7 @@ export default function App() {
         overflowX: "hidden",
       }}
     >
-      {/* Background glow — position: absolute so overflow: hidden clips it correctly.
-          Fixed positioning escapes overflow:hidden and caused the layout to overflow. */}
+      {/* Background glow — position absolute so overflow:hidden clips it */}
       <div
         style={{
           position: "absolute",
@@ -648,6 +649,7 @@ export default function App() {
               touchAction: "none",
             }}
           >
+            {/* Rail */}
             <div
               style={{
                 position: "absolute",
@@ -658,6 +660,8 @@ export default function App() {
                 background: "rgba(255,255,255,0.07)",
               }}
             />
+
+            {/* Fill */}
             <div
               style={{
                 position: "absolute",
@@ -673,6 +677,7 @@ export default function App() {
               }}
             />
 
+            {/* Breakpoint ticks */}
             {BP.filter((b) => b.min > MIN_PX && b.min < MAX_PX).map((b) => {
               const tp = ((b.min - MIN_PX) / (MAX_PX - MIN_PX)) * 100;
               const passed = simWidth >= b.min;
@@ -685,9 +690,7 @@ export default function App() {
                     top: 0,
                     height: "100%",
                     display: "flex",
-                    flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center",
                     pointerEvents: "none",
                   }}
                 >
@@ -704,7 +707,7 @@ export default function App() {
               );
             })}
 
-            {/* Thumb — clipped inside the slider track so it never causes overflow */}
+            {/* Thumb */}
             <div
               style={{
                 position: "absolute",

@@ -1,16 +1,58 @@
-# React + Vite
+# Week 08 — Dynamic Poll Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React app that integrates the vanilla Chart.js library into a React lifecycle
+using `useEffect` as an escape hatch to imperatively control a bar chart.
 
-Currently, two official plugins are available:
+## How to run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Then open `http://localhost:5173` in your browser.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Assignment requirements met
 
-## Expanding the ESLint configuration
+| Requirement              | Location in code                                                                 |
+| ------------------------ | -------------------------------------------------------------------------------- |
+| Imperative Instantiation | `if (!chartInstanceRef.current)` creates Chart only when ref is empty            |
+| State Synchronization    | `else` branch mutates data array and calls `.update()` without recreating chart  |
+| Cleanup Execution        | `return () => chartInstanceRef.current.destroy()` inside useEffect               |
+| Code Comment             | Above the cleanup return, explains why new Chart() on every render causes errors |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+- Vote for React, Vue, or Angular — bar chart updates in real time
+- Metric cards show total votes, leading framework, lead margin, and session time
+- Tie detection — shows "Tied" when two or more frameworks share the lead
+- Activity log with timestamps for every vote
+- Reset button clears all votes and restarts the session timer
+
+## Test cases
+
+### Normal cases
+
+| #   | Action                        | Expected result                                                     |
+| --- | ----------------------------- | ------------------------------------------------------------------- |
+| N1  | Click Vote React 3 times      | React bar grows, legend shows 100%, leading framework shows React   |
+| N2  | Vote for all three frameworks | All bars update, percentages split correctly, lead margin shows gap |
+| N3  | Vote and check activity log   | Every vote is timestamped and appears in recent activity feed       |
+
+### Edge cases
+
+| #   | Action                      | Expected result                                                        |
+| --- | --------------------------- | ---------------------------------------------------------------------- |
+| E1  | Vote only for one framework | That bar dominates, others show 0 votes · 0%, lead margin shows count  |
+| E2  | Click Reset                 | All votes clear to 0, chart resets, log clears, session timer restarts |
+| E3  | Vote equally for all three  | Leading framework and lead margin both show "Tied"                     |
+
+## Tech stack
+
+- React 19 + Vite
+- Chart.js via `useEffect` as an escape hatch
+- `useRef` for imperative chart instance management
+
+## Author
+
+Mark Yosinao

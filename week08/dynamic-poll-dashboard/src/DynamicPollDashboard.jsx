@@ -68,75 +68,86 @@ export default function DynamicPollDashboard() {
   const [elapsed, setElapsed] = useState(0);
 
   const canvasRef = useRef(null);
-  const chartRef = useRef(null);
+  // REQUIREMENT 1 — chartInstanceRef holds the Chart.js instance so we can
+  // check whether it already exists before creating a new one.
+  const chartInstanceRef = useRef(null);
   const startRef = useRef(Date.now());
 
-  // ── Effect 1: init chart once on mount, destroy on unmount ──────────────────
+  // ── REQUIREMENTS 1, 2, 3 & 4 ─────────────────────────────────────────────
   useEffect(() => {
-    chartRef.current = new Chart(canvasRef.current, {
-      type: "bar",
-      data: {
-        labels: FRAMEWORKS.map((f) => f.name),
-        datasets: [
-          {
-            label: "Votes",
-            data: FRAMEWORKS.map(() => 0),
-            backgroundColor: FRAMEWORKS.map((f) => f.color + "33"),
-            borderColor: FRAMEWORKS.map((f) => f.border),
-            borderWidth: 1.5,
-            borderRadius: 6,
-            borderSkipped: false,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 250 },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: { stepSize: 1, precision: 0 },
-            grid: { color: "rgba(128,128,128,0.08)" },
-            border: { display: false },
-          },
-          x: {
-            grid: { display: false },
-            border: { display: false },
-          },
+    // REQUIREMENT 1 — Imperative Instantiation:
+    // Check if chartInstanceRef.current is empty. If it is, create the chart.
+    if (!chartInstanceRef.current) {
+      chartInstanceRef.current = new Chart(canvasRef.current, {
+        type: "bar",
+        data: {
+          labels: FRAMEWORKS.map((f) => f.name),
+          datasets: [
+            {
+              label: "Votes",
+              data: FRAMEWORKS.map((f) => votes[f.name]),
+              backgroundColor: FRAMEWORKS.map((f) => f.color + "33"),
+              borderColor: FRAMEWORKS.map((f) => f.border),
+              borderWidth: 1.5,
+              borderRadius: 6,
+              borderSkipped: false,
+            },
+          ],
         },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => {
-                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                const pct = total ? Math.round((ctx.raw / total) * 100) : 0;
-                return ` ${ctx.raw} vote${ctx.raw !== 1 ? "s" : ""} — ${pct}%`;
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 250 },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 },
+              grid: { color: "rgba(128,128,128,0.08)" },
+              border: { display: false },
+            },
+            x: {
+              grid: { display: false },
+              border: { display: false },
+            },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                  const pct = total ? Math.round((ctx.raw / total) * 100) : 0;
+                  return ` ${ctx.raw} vote${ctx.raw !== 1 ? "s" : ""} — ${pct}%`;
+                },
               },
             },
           },
         },
-      },
-    });
+      });
+    } else {
+      // REQUIREMENT 2 — State Synchronization:
+      // The chart instance already exists — do NOT create a new one.
+      // Mutate the existing data array directly and call .update().
+      chartInstanceRef.current.data.datasets[0].data = FRAMEWORKS.map(
+        (f) => votes[f.name],
+      );
+      chartInstanceRef.current.update("active");
+    }
 
-    // ❗ Without destroy(), Chart.js leaves stale event listeners and a cached
-    // canvas context behind. The next mount throws "Canvas is already in use"
-    // and renders a blank chart.
+    // ❗ If we created a new Chart() on every render without destroying the old
+    // one, Chart.js would stack multiple contexts and event listeners on the
+    // same canvas, causing memory leaks and "Canvas is already in use" errors.
+
+    // REQUIREMENT 3 — Cleanup Execution:
+    // Destroy the chart instance on unmount to remove event listeners and free
+    // the cached canvas context.
     return () => {
-      chartRef.current?.destroy();
-      chartRef.current = null;
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+        chartInstanceRef.current = null;
+      }
     };
-  }, []);
-
-  // ── Effect 2: push updated vote data into the live chart ───────────────────
-  useEffect(() => {
-    if (!chartRef.current) return;
-    chartRef.current.data.datasets[0].data = FRAMEWORKS.map(
-      (f) => votes[f.name],
-    );
-    chartRef.current.update("active");
-  }, [votes]);
+  }, [votes]); // re-runs on every vote so the else branch keeps the chart in sync
 
   // ── Session timer ───────────────────────────────────────────────────────────
   useEffect(() => {
@@ -166,13 +177,12 @@ export default function DynamicPollDashboard() {
     name: f.name,
     v: votes[f.name],
   })).sort((a, b) => b.v - a.v);
-  const leader = total === 0 ? "—" : sorted[0].name;
+
+  const isTied = total > 0 && sorted[0].v === sorted[1].v;
+  const leader = total === 0 ? "—" : isTied ? "Tied" : sorted[0].name;
   const margin =
-    total === 0
-      ? "—"
-      : sorted[0].v === sorted[1].v
-        ? "Tied"
-        : `+${sorted[0].v - sorted[1].v}`;
+    total === 0 ? "—" : isTied ? "Tied" : `+${sorted[0].v - sorted[1].v}`;
+
   const mins = Math.floor(elapsed / 60);
   const secs = elapsed % 60;
   const sessionLabel = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
@@ -205,7 +215,6 @@ export default function DynamicPollDashboard() {
           </span>
         </div>
 
-        {/* Custom legend */}
         <div style={styles.legend}>
           {FRAMEWORKS.map((f) => {
             const pct = total ? Math.round((votes[f.name] / total) * 100) : 0;
@@ -249,9 +258,7 @@ export default function DynamicPollDashboard() {
           <span style={styles.lastVote}>
             {log.length === 0
               ? "No votes yet"
-              : `Last vote: ${log[log.length - 1].name} at ${
-                  log[log.length - 1].time
-                }`}
+              : `Last vote: ${log[log.length - 1].name} at ${log[log.length - 1].time}`}
           </span>
           <button
             onClick={handleReset}
@@ -262,7 +269,6 @@ export default function DynamicPollDashboard() {
           </button>
         </div>
 
-        {/* Activity log */}
         <div style={styles.historyWrap}>
           <div style={styles.historyTitle}>Recent activity</div>
           <div style={styles.logList}>

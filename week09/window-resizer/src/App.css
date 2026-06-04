@@ -1,0 +1,327 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #0f0f13;
+  color: #e8e8f0;
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+.logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+}
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #aaa;
+}
+
+.main {
+  max-width: 860px;
+  width: 100%;
+  margin: 0;
+  padding: 3rem 1.5rem 4rem;
+}
+.title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+.subtitle {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.04em;
+}
+
+.dimensions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.dim-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.dim-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.dim-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.dim-unit {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #555;
+  margin-left: 1px;
+}
+.layout-value {
+  font-size: 1.1rem;
+}
+
+.panel {
+  border-radius: 14px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.3s;
+}
+.panel[data-layout="mobile"] {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+.panel[data-layout="tablet"] {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.2);
+}
+.panel[data-layout="desktop"] {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.panel h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.panel p {
+  font-size: 0.9rem;
+  color: #999;
+  margin-bottom: 1.25rem;
+}
+
+.stream-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+.mobile-grid {
+  grid-template-columns: 1fr;
+}
+.tablet-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+.desktop-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+.stream-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #aaa;
+  letter-spacing: 0.04em;
+}
+
+.breakpoints {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.bp {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #555;
+  transition: all 0.2s;
+}
+.bp.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ddd;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.test-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.75rem;
+}
+.test-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+}
+.test-panel-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.test-panel-sub {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.reset-btn {
+  font-size: 0.78rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #888;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.reset-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ccc;
+}
+
+.test-section-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #555;
+  margin-bottom: 0.6rem;
+}
+.test-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.test-row {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  transition: border-color 0.2s;
+}
+.test-row--passed {
+  border-color: rgba(74, 222, 128, 0.25) !important;
+}
+.test-row--active {
+  border-color: rgba(250, 204, 21, 0.3) !important;
+}
+
+.test-row-top {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
+}
+.test-id {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #888;
+  white-space: nowrap;
+}
+.test-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  flex: 1;
+  min-width: 140px;
+}
+.test-result {
+  font-size: 0.82rem;
+  min-width: 90px;
+  text-align: right;
+  color: #555;
+}
+.test-result--pass {
+  color: #4ade80;
+}
+.test-result--active {
+  color: #facc15;
+}
+
+.run-btn {
+  font-size: 0.78rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #bbb;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+.confirm-btn:hover {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.test-instruction {
+  font-size: 0.78rem;
+  color: #6ea8fe;
+  margin-bottom: 0.2rem;
+  line-height: 1.5;
+}
+.test-expected {
+  font-size: 0.78rem;
+  color: #555;
+  line-height: 1.5;
+}
+.test-expected-label {
+  color: #444;
+  font-weight: 500;
+}
+
+.all-pass {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4ade80;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(74, 222, 128, 0.07);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+}

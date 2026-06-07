@@ -1,6 +1,8 @@
-# Global Theme Switcher
+cat > README.md << 'EOF'
 
-A React application that implements a global Light/Dark mode switcher using the React Context API. The theme state is managed centrally and consumed by every component in the tree — no prop drilling required.
+# useLocalStorage Hook — Theme Switcher
+
+A React application that upgrades the Global Theme Switcher with a custom `useLocalStorage` hook, so the dark/light mode preference persists across page refreshes.
 
 ## Overview
 
@@ -9,15 +11,19 @@ When you toggle the theme:
 - **Light mode** — a bright sunny day scene with an animated sun and floating clouds
 - **Dark mode** — a pitch black scene with glowing white eyes that look left and right, blink, and after 2 seconds a creepy white grin appears
 
-The toggle button and navbar title update instantly to reflect the current theme, powered entirely by `useContext`.
+The selected theme is saved to `localStorage` automatically, so refreshing the page never resets it back to light mode.
+
+## What is useLocalStorage?
+
+`useLocalStorage` is a custom React hook that works exactly like `useState`, except it automatically reads from and writes to the browser's `localStorage`. This means user preferences survive page refreshes without any extra work in the component.
 
 ## Features
 
+- `useLocalStorage` — custom hook that persists state to `localStorage`
 - `ThemeContext` — global theme state using `createContext` and `useLocalStorage`
 - `ThemeProvider` — wraps the entire app and exposes `theme` and `toggleTheme`
 - `ThemeSwitcher` — button component that reads context and triggers the toggle
-- `useLocalStorage` — custom hook that persists theme to `localStorage` so preference survives page refresh
-- Dynamic CSS classes (`.light-mode` / `.dark-mode`) applied to the root container
+- `localStorage` for theme persistence across page refreshes
 - Animated sun with rays and floating clouds in light mode
 - Glowing blinking eyes with delayed smile reveal in dark mode
 
@@ -31,60 +37,56 @@ The toggle button and navbar title update instantly to reflect the current theme
 
 ## Getting Started
 
-```bash
 npm install
 npm run dev
-```
 
 Open http://localhost:5173
 
 ## Running Tests
 
-```bash
 npm test
-```
 
-6 tests covering core context and localStorage behavior:
+6 tests directly testing the `useLocalStorage` hook:
 
 **Normal cases**
 
-1. Default theme is light
-2. `toggleTheme` switches from light to dark
-3. `toggleTheme` switches back from dark to light
+1. Returns `initialValue` when nothing is stored
+2. Saves value to `localStorage` when updated
+3. Loads existing value from `localStorage` on mount
 
 **Edge cases**
 
-4. Toggling twice returns to the original theme — no state leak
-5. Theme persists in `localStorage` after toggle
-6. Toggling 10 times lands back on the correct theme
+4. Handles storing objects, not just strings
+5. Falls back to `initialValue` when `localStorage` has corrupt JSON
+6. Two different keys don't overwrite each other
 
 ## Project Structure
 
-```
 src/
-├── ThemeContext.jsx          # createContext + ThemeProvider + toggleTheme
-├── useLocalStorage.js        # custom hook — reads/writes theme to localStorage
-├── ThemeSwitcher.jsx         # toggle button — reads theme via useContext
-├── App.jsx                   # root — wrapped in ThemeProvider, applies CSS class
-├── App.css                   # .light-mode and .dark-mode class definitions
+├── useLocalStorage.js # custom hook — reads/writes to localStorage
+├── useLocalStorage.test.js # Vitest test suite for useLocalStorage hook
+├── ThemeContext.jsx # createContext + ThemeProvider + useLocalStorage
+├── ThemeSwitcher.jsx # toggle button — reads theme via useContext
+├── App.jsx # root — wrapped in ThemeProvider, applies CSS class
+├── App.css # .light-mode and .dark-mode class definitions
 ├── components/
-│   ├── SunScene.jsx          # animated sunny day scene for light mode
-│   └── EyesScene.jsx         # glowing eyes + smile scene for dark mode
-└── ThemeContext.test.jsx     # Vitest test suite
-```
+│ ├── SunScene.jsx # animated sunny day scene for light mode
+│ └── EyesScene.jsx # glowing eyes + smile scene for dark mode
+└── setupTests.js
 
 ## Key Concepts Demonstrated
 
-**Custom hook** — `useLocalStorage` wraps `useState` with `localStorage` read/write so the theme is initialized from storage on load and updated on every toggle.
+**Custom hook** — `useLocalStorage` wraps `useState` with `localStorage` read/write. State is initialized from storage on mount and saved on every update.
 
-**Context setup** — `ThemeContext` is created with `createContext()` and provided at the root level via `ThemeProvider`. Any component calls `useTheme()` to access the current theme and toggle function directly.
+**Context setup** — `ThemeContext` is provided at the root level via `ThemeProvider`. Any component calls `useTheme()` to access the current theme and toggle function directly.
 
-**Dynamic styling** — the root `div` in `App.jsx` applies `.dark-mode` or `.light-mode` as a CSS class based on the context value, making global theme changes instant across the entire UI.
+**Dynamic styling** — the root `div` in `App.jsx` applies `.dark-mode` or `.light-mode` as a CSS class based on the context value.
 
-**No prop drilling** — `ThemeSwitcher`, `SunScene`, and `EyesScene` all access theme state directly from context without any props passed through parent components.
+**Theme persistence** — switching themes and refreshing the page retains the last selected theme via `localStorage`.
 
-**Theme persistence** — switching themes and refreshing the page retains the last selected theme via `localStorage`, giving users a consistent experience across sessions.
+**No prop drilling** — `ThemeSwitcher`, `SunScene`, and `EyesScene` all access theme state directly from context.
 
 ---
 
 **Author:** Mark Yosinao
+EOF

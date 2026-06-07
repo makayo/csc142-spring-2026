@@ -28,7 +28,7 @@ week07/ — Ecommerce Order Processing System, React Hook Form + TanStack Query 
 week08/ — Dynamic Poll Dashboard
 
 ### Custom Hooks & localStorage
-week09/ — Window Resizer, useLocalStorage Hook — Theme Switcher
+week09/ — Window Resizer, Theme Local Storage App
 
 ## Tech Stack
 

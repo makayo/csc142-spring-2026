@@ -1,5 +1,3 @@
-cat > README.md << 'EOF'
-
 # useLocalStorage Hook — Theme Switcher
 
 A React application that upgrades the Global Theme Switcher with a custom `useLocalStorage` hook, so the dark/light mode preference persists across page refreshes.
@@ -62,6 +60,7 @@ npm test
 
 ## Project Structure
 
+```
 src/
 ├── useLocalStorage.js # custom hook — reads/writes to localStorage
 ├── useLocalStorage.test.js # Vitest test suite for useLocalStorage hook
@@ -73,6 +72,7 @@ src/
 │ ├── SunScene.jsx # animated sunny day scene for light mode
 │ └── EyesScene.jsx # glowing eyes + smile scene for dark mode
 └── setupTests.js
+```
 
 ## Key Concepts Demonstrated
 
@@ -89,4 +89,3 @@ src/
 ---
 
 **Author:** Mark Yosinao
-EOF

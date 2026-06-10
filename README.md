@@ -5,30 +5,42 @@ A collection of frontend development projects built with React, TypeScript, and 
 ## Projects
 
 ### React Fundamentals
+
 week01/ — Counter App — Components, state management, event handling
 
 ### State & Data Management
+
 week02/ — Interactive Recipe Gallery, Task Manager App, User Profile
 
 week03/ — Shopping List (Immer), User Profile (Immer)
 
 ### Server State & API Integration
+
 week04/ — Dog Query App, CRUD Query App (TanStack Query + JSONPlaceholder)
 
 ### Routing & Navigation
+
 week05/ — Health Symmetry Checker, FlavorHub Recipe Router, Blog App
 
 ### Context & Advanced Patterns
+
 week06/ — Context Refactor App, HealthMerge Visualizer, HealthMerge Interview, Theme Switcher App
 
 ### Forms & Server State
+
 week07/ — Ecommerce Order Processing System, React Hook Form + TanStack Query Profile App, User Registration Form
 
 ### Sorting & Polling
+
 week08/ — Dynamic Poll Dashboard
 
 ### Custom Hooks & localStorage
+
 week09/ — Window Resizer, Theme Local Storage App
+
+### Error Handling & Application Safety
+
+week10/ — React Error Boundary Demo
 
 ## Tech Stack
 

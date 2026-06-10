@@ -46,3 +46,23 @@ The WeatherWidget intentionally crashes to demonstrate fault isolation and recov
 npm install
 npm run dev
 ```
+
+## 🧪 How to Run Tests
+
+This project uses Vitest to test the Error Boundary behavior, including crash handling, fallback UI rendering, and widget recovery.
+
+### Run all tests
+
+npm test
+
+### Run tests in watch mode (auto‑reruns on file changes)
+
+npm run test:watch
+
+### Run the Vitest UI (interactive visual test runner, if enabled)
+
+npm run test:ui
+
+### Author
+
+MARK YOSINAO
